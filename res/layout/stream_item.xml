@@ -48,116 +48,100 @@
                 android:focusableInTouchMode="false" 
                 />
   		    
-		    <LinearLayout 
-	            android:layout_width="0dp"
-	            android:layout_weight="1"
-	            android:layout_height="wrap_content"
-	            android:orientation="vertical" 
-			    android:descendantFocusability="blocksDescendants" 
-				android:layout_marginLeft="10dp"
-	        	>
-		        <LinearLayout
-		            android:layout_width="wrap_content"
-		            android:layout_height="@dimen/box_height"
-		            android:orientation="horizontal" 
-				    android:descendantFocusability="blocksDescendants"
-		            >
-		            	
-		            <LinearLayout
-		                android:id="@+id/vote_container"
-		                android:layout_width="@dimen/box_width"
-		                android:layout_height="match_parent"
-		                android:background="@color/voteback"
-		                android:gravity="center"
-		                android:orientation="vertical" >
-		
-		                <TextView
-		                    android:id="@+id/netvotes"
-		                    android:layout_width="wrap_content"
-		                    android:layout_height="wrap_content"
-		                    android:textColor="#000000"
-		                    android:textSize="@dimen/box_font"
-		                    android:textStyle="bold" />
-		
-		                <TextView
-		                    android:id="@+id/vote_label"
-		                    android:layout_width="wrap_content"
-		                    android:layout_height="wrap_content"
-		                    android:text="@string/votes"
-		                    android:textColor="#000000"
-		                    android:textSize="@dimen/box_label"
-		                    />
-		            </LinearLayout>
-		
-		            <LinearLayout
-		                android:id="@+id/answer_container"
-		                android:layout_width="@dimen/box_width"
-		                android:layout_height="match_parent"
-		                android:layout_marginLeft="10dp"
-		                android:background="@color/noanswerback"
-		                android:gravity="center"
-		                android:orientation="vertical" >
-		
-		                <TextView
-		                    android:id="@+id/answers"
-		                    android:layout_width="wrap_content"
-		                    android:layout_height="wrap_content"
-		                    android:textColor="#000000"
-		                    android:textSize="@dimen/box_font"
-		                    android:textStyle="bold" 
-		                    />
-		
-		                <TextView
-		                    android:id="@+id/answer_label"
-		                    android:layout_width="wrap_content"
-		                    android:layout_height="wrap_content"
-		                    android:text="@string/answers"
-		                    android:textColor="#000000"
-		                    android:textSize="@dimen/box_label"
-		                    />
-		            </LinearLayout>
-		
-		            <LinearLayout
-		                android:id="@+id/view_container"
-		                android:layout_width="@dimen/box_width"
-		                android:layout_height="match_parent"
-		                android:layout_marginLeft="10dp"
-		                android:background="@color/viewback"
-		                android:gravity="center"
-		                android:orientation="vertical" >
-		
-		                <TextView
-		                    android:id="@+id/views"
-		                    android:layout_width="wrap_content"
-		                    android:layout_height="wrap_content"
-		                    android:textColor="#000000"
-		                    android:textSize="@dimen/box_font"
-		                    android:textStyle="bold" 
-		                    />
-		
-		                <TextView
-		                    android:id="@+id/view_label"
-		                    android:layout_width="wrap_content"
-		                    android:layout_height="wrap_content"
-		                    android:text="@string/views"
-		                    android:textColor="#000000"
-		                    android:textSize="@dimen/box_label"
-		                    />
-		            </LinearLayout>
-				</LinearLayout>
-				<TextView
-					android:id="@+id/meta"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:clickable="false"
-					android:focusable="false"
-					android:focusableInTouchMode="false"
-					android:textColor="#000000"
-					android:textSize="@dimen/meta_size"
-					android:layout_marginTop="2dp"
+            <LinearLayout
+                android:id="@+id/vote_container"
+                android:layout_width="@dimen/box_width"
+                android:layout_height="match_parent"
+                android:background="@color/voteback"
+                android:gravity="center"
+                android:layout_marginLeft="@dimen/box_spacing"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/netvotes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000"
+                    android:textSize="@dimen/box_font"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/vote_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/votes"
+                    android:textColor="#000000"
+                    android:textSize="@dimen/box_label"
                     />
-			</LinearLayout>            	            
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/answer_container"
+                android:layout_width="@dimen/box_width"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/box_spacing"
+                android:background="@color/noanswerback"
+                android:gravity="center"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/answers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000"
+                    android:textSize="@dimen/box_font"
+                    android:textStyle="bold" 
+                    />
+
+                <TextView
+                    android:id="@+id/answer_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/answers"
+                    android:textColor="#000000"
+                    android:textSize="@dimen/box_label"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/view_container"
+                android:layout_width="@dimen/box_width"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/box_spacing"
+                android:background="@color/viewback"
+                android:gravity="center"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/views"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000"
+                    android:textSize="@dimen/box_font"
+                    android:textStyle="bold" 
+                    />
+
+                <TextView
+                    android:id="@+id/view_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/views"
+                    android:textColor="#000000"
+                    android:textSize="@dimen/box_label"
+                    />
+            </LinearLayout>
 	    </LinearLayout>
+		<TextView
+			android:id="@+id/meta"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:clickable="false"
+			android:focusable="false"
+			android:focusableInTouchMode="false"
+			android:textColor="#000000"
+			android:textSize="@dimen/meta_size"
+			android:layout_marginTop="2dp"
+                  />
 	</LinearLayout>
     <ImageView
         android:layout_width="match_parent"

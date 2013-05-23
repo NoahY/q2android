@@ -193,33 +193,32 @@
 				android:orientation="horizontal"
 				android:layout_height="wrap_content"
 		        android:layout_width="match_parent"
+                android:layout_marginLeft="10dp"
 			    >
 			    <LinearLayout
 					android:id="@+id/qvote_buttons"
-					android:orientation="vertical"
+					android:orientation="horizontal"
 					android:layout_height="wrap_content"
 			        android:layout_width="wrap_content"
-			        android:gravity="center"
 					android:layout_marginRight="8dp"
-					android:background="@color/voteback"
 					android:layout_gravity="center_vertical"
 			        >
 			        <Button 
 						android:id="@+id/qvote_up_button"
 						android:background="@drawable/voteup"
-						android:layout_height="20dp"
+						android:layout_height="30dp"
 				        android:layout_width="30dp"
 			            />
 			        <ImageView
 			            android:id="@+id/qbutton_spacer"
-						android:layout_height="24dp"
-				        android:layout_width="match_parent"
+						android:layout_height="match_parent"
+				        android:layout_width="12dp"
 				        android:visibility="gone"
 			            />
 			        <Button 
 						android:id="@+id/qvote_down_button"
 						android:background="@drawable/votedown"
-						android:layout_height="20dp"
+						android:layout_height="30dp"
 				        android:layout_width="30dp"
 			            />
 				</LinearLayout>

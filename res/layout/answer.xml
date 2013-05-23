@@ -139,29 +139,28 @@
 	    >
 	    <LinearLayout
 			android:id="@+id/vote_buttons"
-			android:orientation="vertical"
-			android:layout_height="match_parent"
+			android:orientation="horizontal"
+			android:layout_height="wrap_content"
 	        android:layout_width="wrap_content"
-	        android:gravity="center"
 			android:layout_marginRight="8dp"
-			android:background="@color/voteback"
+            android:layout_gravity="center_vertical"
 	        >
 	        <Button 
 				android:id="@+id/vote_up_button"
 				android:background="@drawable/voteup"
-				android:layout_height="20dp"
+				android:layout_height="30dp"
 		        android:layout_width="30dp"
 	            />
 	        <ImageView
 	            android:id="@+id/button_spacer"
-				android:layout_height="24dp"
+				android:layout_height="12dp"
 		        android:layout_width="match_parent"
 		        android:visibility="gone"
 	            />
 	        <Button 
 				android:id="@+id/vote_down_button"
 				android:background="@drawable/votedown"
-				android:layout_height="20dp"
+				android:layout_height="30dp"
 		        android:layout_width="30dp"
 	            />
 		</LinearLayout>

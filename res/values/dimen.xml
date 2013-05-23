@@ -3,8 +3,9 @@
     <dimen name="avatar_size">72dp</dimen>
     <dimen name="qavatar_size">96dp</dimen>
     <dimen name="aavatar_size">48dp</dimen>
-    <dimen name="box_width">56dp</dimen>
+    <dimen name="box_width">64dp</dimen>
     <dimen name="box_height">56dp</dimen>
+    <dimen name="box_spacing">6dp</dimen>
     <dimen name="box_font">24sp</dimen>
     <dimen name="box_label">12sp</dimen>
     <dimen name="meta_size">12sp</dimen>

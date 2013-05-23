@@ -557,7 +557,7 @@ public class Q2Android extends SherlockListActivity {
 
     	if(land) {
     		questionPane.setVisibility(View.VISIBLE);
-    		listView.setLayoutParams(new LayoutParams(300, LayoutParams.MATCH_PARENT));
+    		listView.setLayoutParams(new LayoutParams(310, LayoutParams.MATCH_PARENT));
     		listView.setVisibility(View.VISIBLE);
     	}
     	else if(isQuestion){
