@@ -12,9 +12,9 @@ to discuss.
 Instructions
 =============
 
-Step 1: (Webmaster) Install the Question2Answer XML-RPC plugin from https://github.com/NoahY/q2a-xml-rpc
-Step 2: (Webmaster) Activate and configure above plugin via Admin->Plugins and Admin->Permissions
-Step 3: (App user) From the main screen menu, click "Login" and enter your website (root path, e.g. <a href="http://www.site.com/">http://www.site.com/</a>), username, and password and click "Login".  You can also register a new user by entering the website and clicking "Register", which will take you to the site.
+- Step 1: (Webmaster) Install the Question2Answer XML-RPC plugin from https://github.com/NoahY/q2a-xml-rpc
+- Step 2: (Webmaster) Activate and configure above plugin via Admin->Plugins and Admin->Permissions
+- Step 3: (App user) From the main screen menu, click "Login" and enter your website (root path, e.g. http://www.site.com/), username, and password and click "Login".  You can also register a new user by entering the website and clicking "Register", which will take you to the site.
 
 Once you have completed these steps correctly, you should be able to interact with your Question2Answer site via the app.
 
