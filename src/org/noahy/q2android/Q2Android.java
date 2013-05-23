@@ -496,12 +496,14 @@ public class Q2Android extends SherlockListActivity {
 					
 					if(map.containsKey("acted"))
 						position = (Integer)map.get("acted");
-					else 
+					else if(!isLandscape)
+						break;
+					else
 						position = 0;
-
+					
 					Object cobj = getListView().getItemAtPosition(position);
 					if(!(cobj instanceof HashMap))
-						return;
+						break;
 					currentQuestion = (HashMap<?, ?>) cobj;
 					isQuestion = true;
 					adjustLayout();
@@ -544,6 +546,8 @@ public class Q2Android extends SherlockListActivity {
 
 	private boolean isQuestion;
 
+	private boolean isLandscape = false;
+
 	private void adjustLayout() {
 		DisplayMetrics metrics = new DisplayMetrics();
     	getWindowManager().getDefaultDisplay().getMetrics(metrics);
@@ -557,13 +561,14 @@ public class Q2Android extends SherlockListActivity {
     	else if(isQuestion){
     		questionPane.setVisibility(View.VISIBLE);
     		listView.setVisibility(View.GONE);
-    		actionBar.setDisplayHomeAsUpEnabled(false);
+    		actionBar.setDisplayHomeAsUpEnabled(true);
     	}
     	else {
     		questionPane.setVisibility(View.GONE);
     		listView.setVisibility(View.VISIBLE);
-    		actionBar.setDisplayHomeAsUpEnabled(true);
+    		actionBar.setDisplayHomeAsUpEnabled(false);
     	}
+    	isLandscape  = land;
 	}
 
 	protected void doSlideToggle(View view) {
