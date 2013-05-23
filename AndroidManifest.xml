@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+      package="org.noahy.q2android"
+      android:versionName="0.1" 
+      android:versionCode="1">
+    
+	<uses-sdk android:minSdkVersion="5" android:targetSdkVersion="17" />
+	<uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+
+    <supports-screens android:resizeable="true"
+                    android:smallScreens="true"
+                    android:normalScreens="true"
+                    android:largeScreens="true"
+                    android:xlargeScreens="true"
+                    android:anyDensity="true"/>  
+    <application 
+        android:icon="@drawable/actionbar_icon" 
+        android:label="@string/app_name"
+        android:allowBackup="true"
+        >
+        <activity android:label="@string/app_name" 
+			android:name="org.noahy.q2android.Q2Android"
+			android:theme="@style/LightTheme"
+ 			android:logo="@drawable/actionbar_icon"
+	 		android:configChanges="orientation|screenSize|keyboardHidden"
+	 		android:windowSoftInputMode="stateUnchanged"
+	 		android:launchMode="singleTask">
+		    <intent-filter>
+		        <action android:name="android.intent.action.SEND" />
+		        <category android:name="android.intent.category.DEFAULT" />
+		        <data android:mimeType="text/plain" />
+		    </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:label="Preferences" 
+            android:name="org.noahy.q2android.Q2ASettingsActivity"
+ 			android:theme="@style/LightTheme"
+			android:configChanges="orientation|screenSize|keyboardHidden"
+   			android:logo="@drawable/actionbar_icon"
+            />
+        <activity android:label="Help" 
+            android:name="org.noahy.q2android.Q2AHelpActivity"
+ 			android:theme="@style/LightTheme"
+   			android:logo="@drawable/actionbar_icon"
+            />       
+        <activity 
+            android:name="org.noahy.q2android.Q2AUserActivity"
+ 			android:theme="@style/Theme.Transparent"
+            />       
+        <activity 
+            android:name="org.noahy.q2android.Q2ALoginActivity"
+ 			android:theme="@style/Theme.Transparent"
+            />       
+
+    </application>
+</manifest> 

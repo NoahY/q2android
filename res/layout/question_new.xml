@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/message"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" 
+    >
+	<EditText
+	    android:id="@+id/title"
+	    android:hint="@string/title_hint"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:textColor="#000000"
+		android:textSize="16sp"
+	    />
+	<EditText
+	    android:id="@+id/content"
+	    android:gravity="top"
+	    android:hint="@string/content_hint"
+		android:layout_width="match_parent"
+		android:layout_height="200dp"
+		android:textColor="#000000"
+		android:textSize="14sp"
+	    />
+	<EditText
+	    android:id="@+id/tags"
+	    android:hint="@string/tags_hint"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:textColor="#000000"
+		android:textSize="16sp"
+	    />
+</LinearLayout>

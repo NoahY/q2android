@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="voteback">#E7E7FF</color>
+    <color name="noanswerback">#FFD9D5</color>
+    <color name="someanswerback">#EAFFEA</color>
+    <color name="selanswerback">#BBFFBB</color>
+    <color name="viewback">#EEEEEE</color>
+</resources>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="comment_options">
+        <item>Delete</item>
+        <item>Reply</item>
+	</string-array>
+    <string-array name="group_types">
+        <item>public</item>
+        <item>private</item>
+        <item>hidden</item>
+	</string-array>
+</resources>

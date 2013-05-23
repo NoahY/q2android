@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+	<item 
+		android:icon="@android:drawable/ic_menu_rotate"
+		android:title="@string/refresh"
+  		android:showAsAction="always" 
+        android:orderInCategory="1"
+		android:id="@+id/menuStream"/>
+	<item 
+		android:icon="@android:drawable/ic_menu_edit"
+		android:title="@string/new_question"
+  		android:showAsAction="always" 
+        android:orderInCategory="2"
+		android:id="@+id/menuNew"/>
+	<item 
+		android:icon="@android:drawable/ic_menu_add"
+		android:title="@string/login"
+  		android:showAsAction="never" 
+        android:orderInCategory="3"
+		android:id="@+id/menuLogin"/>
+    <item 
+		android:icon="@android:drawable/ic_menu_preferences"
+		android:title="@string/preferences"
+  		android:showAsAction="never" 
+        android:orderInCategory="4"
+		android:id="@+id/menuPrefs"/>
+    <item 
+		android:icon="@android:drawable/ic_menu_help"
+		android:title="@string/help"
+  		android:showAsAction="never" 
+        android:orderInCategory="5"
+		android:id="@+id/menuHelp"/>
+</menu>
