@@ -10,15 +10,14 @@
 	    android:descendantFocusability="blocksDescendants" 
         android:background="#FFFFFF"
         android:orientation="vertical"
-        android:padding="6dp" 
 	    >
 	    <HorizontalScrollView 
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scrollbars="none"
-	    android:descendantFocusability="blocksDescendants"
-	    android:layout_marginBottom="6dp"
-		>
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:scrollbars="none"
+		    android:descendantFocusability="blocksDescendants"
+	        android:padding="6dp" 
+			>
 			<TextView
 				android:id="@+id/title"
 				android:layout_width="wrap_content"
@@ -27,34 +26,42 @@
 				android:focusable="false"
 				android:focusableInTouchMode="false"
 				android:textColor="#000000"
-				android:textSize="@dimen/title_size"
+				android:textSize="@dimen/box_title_size"
 				android:textStyle="bold" 
 				android:ellipsize="end"
 				/>
 		</HorizontalScrollView>			
 		<LinearLayout 
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/box_height"
             android:orientation="horizontal" 
 		    android:descendantFocusability="blocksDescendants" 
 		    >
+  		    <ImageView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+  		        />			
             <ImageView
                 android:id="@+id/avatar"
-                android:layout_width="@dimen/avatar_size"
-                android:layout_height="@dimen/avatar_size"
+                android:layout_width="@dimen/box_height"
+                android:layout_height="@dimen/box_height"
                 android:clickable="false"
                 android:contentDescription="@string/avatar"
                 android:focusable="false"
                 android:focusableInTouchMode="false" 
                 />
-  		    
+  		    <ImageView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+  		        />
             <LinearLayout
                 android:id="@+id/vote_container"
                 android:layout_width="@dimen/box_width"
                 android:layout_height="match_parent"
                 android:background="@color/voteback"
                 android:gravity="center"
-                android:layout_marginLeft="@dimen/box_spacing"
                 android:orientation="vertical" >
 
                 <TextView
@@ -74,12 +81,17 @@
                     android:textSize="@dimen/box_label"
                     />
             </LinearLayout>
+  		    <ImageView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+  		        />
 
+            
             <LinearLayout
                 android:id="@+id/answer_container"
                 android:layout_width="@dimen/box_width"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/box_spacing"
                 android:background="@color/noanswerback"
                 android:gravity="center"
                 android:orientation="vertical" >
@@ -102,12 +114,17 @@
                     android:textSize="@dimen/box_label"
                     />
             </LinearLayout>
+  		    <ImageView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+  		        />
 
+            
             <LinearLayout
                 android:id="@+id/view_container"
                 android:layout_width="@dimen/box_width"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/box_spacing"
                 android:background="@color/viewback"
                 android:gravity="center"
                 android:orientation="vertical" >
@@ -130,6 +147,11 @@
                     android:textSize="@dimen/box_label"
                     />
             </LinearLayout>
+  		    <ImageView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+  		        />            
 	    </LinearLayout>
 		<TextView
 			android:id="@+id/meta"
@@ -139,9 +161,10 @@
 			android:focusable="false"
 			android:focusableInTouchMode="false"
 			android:textColor="#000000"
-			android:textSize="@dimen/meta_size"
-			android:layout_marginTop="2dp"
-                  />
+			android:textStyle="italic"
+			android:textSize="@dimen/stream_meta_size"
+			android:padding="6dp" 
+            />
 	</LinearLayout>
     <ImageView
         android:layout_width="match_parent"

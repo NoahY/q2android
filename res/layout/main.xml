@@ -194,6 +194,7 @@
 				android:layout_height="wrap_content"
 		        android:layout_width="match_parent"
                 android:layout_marginLeft="10dp"
+			    android:layout_marginTop="10dp"
 			    >
 			    <LinearLayout
 					android:id="@+id/qvote_buttons"
@@ -250,13 +251,18 @@
 						android:textSize="@dimen/box_label"
 						/> 			    		    
 				</LinearLayout>
+				<View 
+					android:layout_width="0dp"
+					android:layout_weight="1"
+					android:layout_height="match_parent"
+				    />
 				<ImageButton 
 				    android:src="@drawable/starrer"
 					android:layout_width="24dp"
 					android:layout_height="24dp"
 					android:layout_gravity="center_vertical"
 					android:background="@null"
-					android:layout_marginLeft="10dp"
+					android:layout_margin="10dp"
 				    />				
 			</LinearLayout>
 	
@@ -264,7 +270,7 @@
 		        android:id="@+id/qcontent"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content" 
-				android:textSize="16sp"
+				android:textSize="@dimen/content_size"
 				android:textColor="#000000"
 				android:padding="10dp"
 		        />

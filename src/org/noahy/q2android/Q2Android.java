@@ -43,6 +43,7 @@ import android.view.View.OnClickListener;
 import android.widget.LinearLayout.LayoutParams;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -92,9 +93,6 @@ public class Q2Android extends SherlockListActivity {
 	protected static int currentScope;
 
 	public static int NOTIFY_ID = 0;
-
-	private AlarmManager mgr=null;
-	private PendingIntent pi=null;
 
 	private Intent intent;
 
@@ -182,11 +180,6 @@ public class Q2Android extends SherlockListActivity {
 		super.onResume();
 
 
-    	// set up notification
-		((NotificationManager)getSystemService(NOTIFICATION_SERVICE)).cancelAll();
-		
-		mgr=(AlarmManager)getSystemService(Context.ALARM_SERVICE);
-		
     	activity = this;
     	String newWebsite = Q2AWebsite.getWebsite(this);
     	adjustLayout();
@@ -194,15 +187,6 @@ public class Q2Android extends SherlockListActivity {
     	if(intent.hasExtra(Intent.EXTRA_TEXT)) {
     		Log.i("Q2Android","Got text: "+intent.getStringExtra(Intent.EXTRA_TEXT));
     		intent.removeExtra(Intent.EXTRA_TEXT);
-    	}
-    	
-    	if(prefs.getBoolean("interval_sync", false)) {
-    		Long interval = Long.parseLong(prefs.getString("sync_interval", "60"))*60*1000;
-			Log.i(TAG,interval+"");
-    		mgr.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-				SystemClock.elapsedRealtime()+interval,
-				interval,
-				pi);
     	}
     	
     	// if website changed
@@ -271,7 +255,6 @@ public class Q2Android extends SherlockListActivity {
 					public void onClick(DialogInterface dialog, int whichButton) {
 						HashMap<String,Object> data = new HashMap<String,Object>();
 						HashMap<String,Object> info = new HashMap<String,Object>();
-						final HashMap<?,?> rawMap = (HashMap<?, ?>) currentQuestion.get("raw");
 
 						info.put("type", "Q");
 						info.put("title", title.getText().toString());
@@ -280,9 +263,12 @@ public class Q2Android extends SherlockListActivity {
 
 						data.put("action_data", info);
 						data.put("action","post");
-						data.put("action_id", (String)rawMap.get("postid"));
 						getQuestions(data,currentScope);
-						
+
+						hideKeyboard(title);
+		        		isQuestion = false;
+		        		adjustLayout();						
+
 			        }
 			    }).setNegativeButton(android.R.string.no, null).show();	
 				break;
@@ -552,13 +538,18 @@ public class Q2Android extends SherlockListActivity {
 	private void adjustLayout() {
 		DisplayMetrics metrics = new DisplayMetrics();
     	getWindowManager().getDefaultDisplay().getMetrics(metrics);
+
+    	int px = getResources().getDimensionPixelSize(R.dimen.stream_width);
+    	
     	int width = metrics.widthPixels; 	
     	boolean land = width > 600;
 
     	if(land) {
     		questionPane.setVisibility(View.VISIBLE);
-    		listView.setLayoutParams(new LayoutParams(310, LayoutParams.MATCH_PARENT));
+    		listView.setLayoutParams(new LayoutParams(px, LayoutParams.MATCH_PARENT));
     		listView.setVisibility(View.VISIBLE);
+    		isQuestion = false;
+    		actionBar.setDisplayHomeAsUpEnabled(false);
     	}
     	else if(isQuestion){
     		questionPane.setVisibility(View.VISIBLE);
@@ -583,10 +574,6 @@ public class Q2Android extends SherlockListActivity {
 
 	private void setEmptyList() {
 		setListAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1));
-	}
-
-	public void cancelAlarm(View v) {
-		mgr.cancel(pi);
 	}
 
 	public void doSlideDown(View view){
@@ -712,7 +699,7 @@ public class Q2Android extends SherlockListActivity {
 			questionAnswer.setOnClickListener(new OnClickListener() {
 
 				@Override
-				public void onClick(View v) {
+				public void onClick(final View v) {
 					
 					final EditText input = new EditText(activity);
 					input.setHeight(200);
@@ -731,6 +718,10 @@ public class Q2Android extends SherlockListActivity {
 							data.put("action","post");
 							data.put("action_id", (String)rawMap.get("postid"));
 							getQuestions(data,currentScope);
+
+							hideKeyboard(input);
+
+
 				        }
 				    }).setNegativeButton(android.R.string.no, null).show();	
 				}
@@ -759,6 +750,9 @@ public class Q2Android extends SherlockListActivity {
 							data.put("action","post");
 							data.put("action_id", questionId);
 							getQuestions(data,currentScope);
+
+							hideKeyboard(input);
+
 				        }
 				    }).setNegativeButton(android.R.string.no, null).show();	
 				}
@@ -911,6 +905,9 @@ public class Q2Android extends SherlockListActivity {
 									data.put("action","post");
 									data.put("action_id", questionId);
 									getQuestions(data,currentScope);
+
+									hideKeyboard(input);
+
 						        }
 						    }).setNegativeButton(android.R.string.no, null).show();	
 						}
@@ -929,8 +926,11 @@ public class Q2Android extends SherlockListActivity {
 
 		    		// get comments
 		        	if(answer.get("comments") instanceof Object[]) {
-						LinearLayout commentView = (LinearLayout) answerView.findViewById(R.id.comments);
-						addComments((Object[]) answer.get("comments"), commentView);
+						Object[] comments = (Object[]) answer.get("comments");
+		        		if(comments.length > 0) {
+							LinearLayout commentView = (LinearLayout) answerView.findViewById(R.id.comments);
+							addComments(comments, commentView);
+		        		}
 		        	}
 		        	answerContainer.addView(answerView);
 				}
@@ -962,6 +962,13 @@ public class Q2Android extends SherlockListActivity {
 	        	view.addView(commentView);
 			}
 		}
+	}
+	
+	private void hideKeyboard(View v) {
+		InputMethodManager imm = (InputMethodManager)getSystemService(
+			      Context.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+		
 	}
 	
 }

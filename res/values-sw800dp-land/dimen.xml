@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="stream_width">312dp</dimen>
+    <dimen name="qavatar_size">96dp</dimen>
+    <dimen name="aavatar_size">48dp</dimen>
+    <dimen name="box_width">64dp</dimen>
+    <dimen name="box_height">72dp</dimen>
+    <dimen name="box_font">24sp</dimen>
+    <dimen name="box_label">14sp</dimen>
+    <dimen name="meta_size">18sp</dimen>
+    <dimen name="stream_meta_size">14sp</dimen>
+    <dimen name="title_size">24sp</dimen>
+    <dimen name="box_title_size">16sp</dimen>
+    <dimen name="comment_size">16sp</dimen>
+    <dimen name="content_size">20sp</dimen>
+</resources>
