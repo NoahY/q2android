@@ -5,17 +5,19 @@
     android:orientation="vertical"
 	android:paddingLeft="24dp"
 	android:paddingRight="12dp"
-    android:background="#EEEEEE"
     >
    	<TextView
         android:id="@+id/meta"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content" 
-		android:textSize="16sp"
+		android:textSize="@dimen/meta_size"
 		android:textStyle="bold"
 		android:textColor="#000000"
+	    android:background="#EEEEEE"
+		android:padding="8dp"
         />
 	<TextView
+	    android:background="#EEEEEE"
 	    android:id="@+id/content"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
@@ -23,6 +25,7 @@
 		android:paddingBottom="6dp"
 		android:textIsSelectable="true"
 		android:textColor="#000000"
-		android:textSize="13sp"
+		android:textSize="@dimen/comment_size"
+		android:padding="8dp"
 	    />
 </LinearLayout>

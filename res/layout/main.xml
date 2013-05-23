@@ -8,8 +8,7 @@
 	android:background="#DDDDDD"
 	>
     <ListView android:id="@+id/android:list"
-	    android:layout_width="0dp"
-	    android:layout_weight="0.5"
+	    android:layout_width="300dp"
 		android:layout_height="match_parent"
 		android:clipToPadding="false"
 		android:fadingEdge="none"
@@ -25,7 +24,7 @@
 		android:id="@+id/q_pane"
 		android:layout_height="match_parent"
         android:layout_width="0dp"
-        android:layout_weight="0.5"
+        android:layout_weight="1"
 		android:background="#ffffff"
 	    >
  		<LinearLayout
@@ -36,66 +35,174 @@
 			android:orientation="vertical"
 			android:visibility="gone"
 		    >
-	        <HorizontalScrollView
+		    <LinearLayout 
+				android:orientation="horizontal"
 				android:layout_height="wrap_content"
-		        android:layout_width="match_parent"
-	            >		    
-			    <LinearLayout 
-					android:orientation="horizontal"
-					android:layout_height="wrap_content"
+		        android:layout_width="wrap_content"
+			    >
+		    	<ImageView
+				    android:id="@+id/qavatar"
+					android:layout_width="@dimen/qavatar_size"
+					android:layout_height="96dp"
+					android:contentDescription="@string/avatar"
+				    />
+		    	<LinearLayout
+					android:orientation="vertical"
+					android:layout_height="match_parent"
 			        android:layout_width="wrap_content"
-				    >
-			    	<ImageView
-					    android:id="@+id/qavatar"
-						android:layout_width="96dp"
-						android:layout_height="96dp"
-						android:contentDescription="@string/avatar"
-					    />
-				    <LinearLayout
-						android:orientation="vertical"
-						android:layout_height="wrap_content"
-				        android:layout_width="0dp"
-				        android:layout_weight="1"
-				        android:layout_marginLeft="4dp"
-				        >
-						<TextView android:id="@+id/qtitle" 
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content" 
-							android:textSize="24sp"
-							android:textStyle="bold"
-							android:textColor="#000000"
-							android:layout_margin="8dp"
-							/>
-						<TextView
-					        android:id="@+id/qmeta"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content" 
-							android:textSize="20sp"
-							android:textStyle="bold"
-							android:textColor="#000000"
-							android:layout_margin="8dp"
-					        />
-					</LinearLayout>
+			        android:layout_marginLeft="8dp"
+			        >
+					<TextView android:id="@+id/qtitle" 
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content" 
+						android:textSize="@dimen/title_size"
+						android:textStyle="bold"
+						android:textColor="#000000"
+						/>
+					<TextView
+				        android:id="@+id/qmeta"
+						android:layout_width="match_parent"
+						android:layout_height="0dp"
+						android:layout_weight="1" 
+						android:textSize="@dimen/meta_size"
+						android:textStyle="bold"
+						android:textColor="#000000"
+						android:gravity="bottom"
+				        />
 				</LinearLayout>
-			</HorizontalScrollView>
-			<ImageView 
+			</LinearLayout>
+			<ImageView
+				android:layout_height="1dp" 
 				android:layout_width="match_parent"
-				android:layout_height="1dp"
-				android:background="#DDDDDD"
-				android:layout_marginBottom="4dp"
-			    />
+				android:background="#EEEEEE"
+				/>
+    			
+	        <HorizontalScrollView 
+	            android:layout_width="match_parent"
+	            android:layout_height="match_parent"
+	            android:scrollbars="none"
+	            >
+	            <LinearLayout
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:orientation="horizontal"
+	                >
+	    			<Button 
+					    android:text="@string/edit" 
+					    android:id="@+id/qedit"
+						android:layout_width="wrap_content" 
+						android:layout_height="wrap_content"
+						android:textSize="16sp" 
+						android:textColor="#666666"
+						android:background="#FFFFFF"
+						android:padding="6dp"
+						/>
+					<ImageView
+						android:layout_height="match_parent" 
+						android:layout_width="1dp"
+						android:layout_marginTop="4dp"
+						android:layout_marginBottom="4dp"
+						android:background="#EEEEEE"
+						/>
+					<Button 
+					    android:text="@string/flag" 
+					    android:id="@+id/qflag"
+						android:layout_width="wrap_content" 
+						android:layout_height="wrap_content"
+						android:textSize="16sp" 
+						android:textColor="#666666"
+						android:background="#FFFFFF"
+						android:padding="6dp"
+						/>
+					<ImageView
+						android:layout_height="match_parent" 
+						android:layout_width="1dp"
+						android:layout_marginTop="4dp"
+						android:layout_marginBottom="4dp"
+						android:background="#EEEEEE"
+						/>
+					<Button 
+					    android:text="@string/close" 
+					    android:id="@+id/qclose"
+						android:layout_width="wrap_content" 
+						android:layout_height="wrap_content"
+						android:textSize="16sp" 
+						android:textColor="#666666"
+						android:background="#FFFFFF"
+						android:padding="6dp"
+						/>
+					<ImageView
+						android:layout_height="match_parent" 
+						android:layout_width="1dp"
+						android:layout_marginTop="4dp"
+						android:layout_marginBottom="4dp"
+						android:background="#EEEEEE"
+						/>
+					<Button 
+					    android:text="@string/hide" 
+					    android:id="@+id/qhide"
+						android:layout_width="wrap_content" 
+						android:layout_height="wrap_content"
+						android:textSize="16sp" 
+						android:textColor="#666666"
+						android:background="#FFFFFF"
+						android:padding="6dp"
+						/>
+					<ImageView
+						android:layout_height="match_parent" 
+						android:layout_width="1dp"
+						android:layout_marginTop="4dp"
+						android:layout_marginBottom="4dp"
+						android:background="#EEEEEE"
+						/>
+					<Button 
+					    android:text="@string/answer" 
+					    android:id="@+id/qanswer"
+						android:layout_width="wrap_content" 
+						android:layout_height="wrap_content"
+						android:textSize="16sp" 
+						android:textColor="#666666"
+						android:background="#FFFFFF"
+						android:padding="6dp"
+						/>
+					<ImageView
+						android:layout_height="match_parent" 
+						android:layout_width="1dp"
+						android:layout_marginTop="4dp"
+						android:layout_marginBottom="4dp"
+						android:background="#EEEEEE"
+						/>
+					<Button 
+					    android:text="@string/comment" 
+					    android:id="@+id/qcomment"
+						android:layout_width="wrap_content" 
+						android:layout_height="wrap_content"
+						android:textSize="16sp" 
+						android:textColor="#666666"
+						android:background="#FFFFFF"
+						android:padding="6dp"
+						/>						
+				</LinearLayout>
+			</HorizontalScrollView>					
+			<ImageView
+				android:layout_height="1dp" 
+				android:layout_width="match_parent"
+				android:background="#EEEEEE"
+				/>						
 			<LinearLayout 
 				android:orientation="horizontal"
-				android:layout_height="80dp"
+				android:layout_height="wrap_content"
 		        android:layout_width="match_parent"
 			    >
 			    <LinearLayout
 					android:id="@+id/qvote_buttons"
 					android:orientation="vertical"
-					android:layout_height="match_parent"
+					android:layout_height="wrap_content"
 			        android:layout_width="wrap_content"
 			        android:gravity="center"
-			        android:layout_marginLeft="10dp"
+					android:layout_marginRight="8dp"
+					android:background="@color/voteback"
+					android:layout_gravity="center_vertical"
 			        >
 			        <Button 
 						android:id="@+id/qvote_up_button"
@@ -118,12 +225,11 @@
 				</LinearLayout>
     			<LinearLayout 
 					android:id="@+id/vote_container"
-					android:layout_width="60dp"
-					android:layout_height="match_parent"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
 					android:orientation="vertical"
 				    android:gravity="center"
-					android:layout_marginRight="8dp"
-					android:layout_marginLeft="8dp"
+					android:layout_gravity="center_vertical"
 				    >
 					<TextView
 					    android:id="@+id/qnetvotes"
@@ -132,7 +238,7 @@
 						android:textColor="#000000"
 						android:gravity="center"
 						android:textStyle="bold"
-						android:textSize="24sp"
+						android:textSize="@dimen/box_font"
 						/> 
 					<TextView
 					    android:id="@+id/qvote_label"
@@ -142,139 +248,19 @@
 						android:gravity="center"
 						android:textStyle="bold"
 						android:text="@string/votes"
-						android:textSize="16sp"
+						android:textSize="@dimen/box_label"
 						/> 			    		    
 				</LinearLayout>
-		        <HorizontalScrollView 
-		            android:layout_width="0dp"
-		            android:layout_height="match_parent"
-		            android:layout_marginLeft="10dp"
-		            android:layout_weight="1"
-		            android:scrollbars="none"
-		            >
-					<LinearLayout 
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:orientation="vertical"
-		                android:layout_gravity="center_vertical"
-						>
-						<ImageView
-							android:layout_height="1dp" 
-							android:layout_width="match_parent"
-							android:layout_marginLeft="4dp"
-							android:layout_marginRight="4dp"
-							android:background="#EEEEEE"
-							/>
-			            <LinearLayout
-			                android:layout_width="wrap_content"
-			                android:layout_height="wrap_content"
-			                >
-			    			<Button 
-							    android:text="@string/edit" 
-							    android:id="@+id/qedit"
-								android:layout_width="wrap_content" 
-								android:layout_height="wrap_content"
-								android:textSize="16sp" 
-								android:textColor="#666666"
-								android:background="#FFFFFF"
-								android:padding="6dp"
-								/>
-							<ImageView
-								android:layout_height="match_parent" 
-								android:layout_width="1dp"
-								android:layout_marginTop="4dp"
-								android:layout_marginBottom="4dp"
-								android:background="#EEEEEE"
-								/>
-							<Button 
-							    android:text="@string/flag" 
-							    android:id="@+id/qflag"
-								android:layout_width="wrap_content" 
-								android:layout_height="wrap_content"
-								android:textSize="16sp" 
-								android:textColor="#666666"
-								android:background="#FFFFFF"
-								android:padding="6dp"
-								/>
-							<ImageView
-								android:layout_height="match_parent" 
-								android:layout_width="1dp"
-								android:layout_marginTop="4dp"
-								android:layout_marginBottom="4dp"
-								android:background="#EEEEEE"
-								/>
-							<Button 
-							    android:text="@string/close" 
-							    android:id="@+id/qclose"
-								android:layout_width="wrap_content" 
-								android:layout_height="wrap_content"
-								android:textSize="16sp" 
-								android:textColor="#666666"
-								android:background="#FFFFFF"
-								android:padding="6dp"
-								/>
-							<ImageView
-								android:layout_height="match_parent" 
-								android:layout_width="1dp"
-								android:layout_marginTop="4dp"
-								android:layout_marginBottom="4dp"
-								android:background="#EEEEEE"
-								/>
-							<Button 
-							    android:text="@string/hide" 
-							    android:id="@+id/qhide"
-								android:layout_width="wrap_content" 
-								android:layout_height="wrap_content"
-								android:textSize="16sp" 
-								android:textColor="#666666"
-								android:background="#FFFFFF"
-								android:padding="6dp"
-								/>
-							<ImageView
-								android:layout_height="match_parent" 
-								android:layout_width="1dp"
-								android:layout_marginTop="4dp"
-								android:layout_marginBottom="4dp"
-								android:background="#EEEEEE"
-								/>
-							<Button 
-							    android:text="@string/answer" 
-							    android:id="@+id/qanswer"
-								android:layout_width="wrap_content" 
-								android:layout_height="wrap_content"
-								android:textSize="16sp" 
-								android:textColor="#666666"
-								android:background="#FFFFFF"
-								android:padding="6dp"
-								/>
-							<ImageView
-								android:layout_height="match_parent" 
-								android:layout_width="1dp"
-								android:layout_marginTop="4dp"
-								android:layout_marginBottom="4dp"
-								android:background="#EEEEEE"
-								/>
-							<Button 
-							    android:text="@string/comment" 
-							    android:id="@+id/qcomment"
-								android:layout_width="wrap_content" 
-								android:layout_height="wrap_content"
-								android:textSize="16sp" 
-								android:textColor="#666666"
-								android:background="#FFFFFF"
-								android:padding="6dp"
-								/>						
-						</LinearLayout>
-						<ImageView
-							android:layout_height="1dp" 
-							android:layout_width="match_parent"
-							android:layout_marginLeft="4dp"
-							android:layout_marginRight="4dp"
-							android:background="#EEEEEE"
-							/>						
-					</LinearLayout>
-				</HorizontalScrollView>			
+				<ImageButton 
+				    android:src="@drawable/starrer"
+					android:layout_width="24dp"
+					android:layout_height="24dp"
+					android:layout_gravity="center_vertical"
+					android:background="@null"
+					android:layout_marginLeft="10dp"
+				    />				
 			</LinearLayout>
+	
 			<TextView
 		        android:id="@+id/qcontent"
 				android:layout_width="match_parent"

@@ -40,6 +40,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnClickListener;
+import android.widget.LinearLayout.LayoutParams;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView.AdapterContextMenuInfo;
@@ -552,10 +553,11 @@ public class Q2Android extends SherlockListActivity {
 		DisplayMetrics metrics = new DisplayMetrics();
     	getWindowManager().getDefaultDisplay().getMetrics(metrics);
     	int width = metrics.widthPixels; 	
-    	boolean land = getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE && width > 600;
+    	boolean land = width > 600;
 
     	if(land) {
     		questionPane.setVisibility(View.VISIBLE);
+    		listView.setLayoutParams(new LayoutParams(300, LayoutParams.MATCH_PARENT));
     		listView.setVisibility(View.VISIBLE);
     	}
     	else if(isQuestion){
@@ -565,6 +567,7 @@ public class Q2Android extends SherlockListActivity {
     	}
     	else {
     		questionPane.setVisibility(View.GONE);
+    		listView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
     		listView.setVisibility(View.VISIBLE);
     		actionBar.setDisplayHomeAsUpEnabled(false);
     	}

@@ -91,7 +91,13 @@ public class Q2AStrings {
 	public static Spanned getEntryContent(String string) {
 		if(string == null)
 			string = "";
-		string = string.replaceAll("\n", "").replaceAll("</p><p>", "<br/><br/>").replaceFirst(".*<DIV CLASS=\"entry-content\"><p>","").replaceFirst("</p></DIV>$", "");
+		string = string
+				.replaceAll("\n", "")
+				.replaceAll("</p><p>", "<br/><br/>")
+				.replaceFirst(".*<DIV[^>]*>","")
+				.replaceFirst("</DIV>[^<]*$", "")
+				.replaceAll("</*p>", "");
+		//Log.i(TAG,string);
 		Spanned content = Html.fromHtml(string);
     	return content;
 	}

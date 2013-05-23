@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="slide_width">180dp</dimen>
+    <dimen name="avatar_size">72dp</dimen>
+    <dimen name="qavatar_size">96dp</dimen>
+    <dimen name="aavatar_size">48dp</dimen>
+    <dimen name="box_width">56dp</dimen>
+    <dimen name="box_height">56dp</dimen>
+    <dimen name="box_font">24sp</dimen>
+    <dimen name="box_label">12sp</dimen>
+    <dimen name="meta_size">12sp</dimen>
+    <dimen name="title_size">16sp</dimen>
+    <dimen name="comment_size">13sp</dimen>
 </resources>

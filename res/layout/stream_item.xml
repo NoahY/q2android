@@ -2,179 +2,166 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:descendantFocusability="blocksDescendants"
+    android:descendantFocusability="blocksDescendants" 
     >
-
-    <LinearLayout
+	<LinearLayout 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+	    android:descendantFocusability="blocksDescendants" 
         android:background="#FFFFFF"
-        android:orientation="horizontal"
-        android:padding="6dp" >
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="80dp"
-            android:background="#FFFFFF"
-            android:orientation="horizontal" >
-
-            <LinearLayout
-                android:id="@+id/vote_container"
-                android:layout_width="80dp"
-                android:layout_height="match_parent"
-                android:background="@color/voteback"
-                android:gravity="center"
-                android:orientation="vertical" >
-
-                <TextView
-                    android:id="@+id/netvotes"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:textColor="#000000"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/vote_label"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/votes"
-                    android:textColor="#000000"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/answer_container"
-                android:layout_width="80dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:background="@color/noanswerback"
-                android:gravity="center"
-                android:orientation="vertical" >
-
-                <TextView
-                    android:id="@+id/answers"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:textColor="#000000"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/answer_label"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/answers"
-                    android:textColor="#000000"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/view_container"
-                android:layout_width="80dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:background="@color/viewback"
-                android:gravity="center"
-                android:orientation="vertical" >
-
-                <TextView
-                    android:id="@+id/views"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:textColor="#000000"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/view_label"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/views"
-                    android:textColor="#000000"
-                    android:textStyle="bold" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <HorizontalScrollView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_weight="1"
-		    android:descendantFocusability="blocksDescendants"
-            android:clickable="false"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:scrollbars="none" >
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
+        android:orientation="vertical"
+        android:padding="6dp" 
+	    >
+	    <HorizontalScrollView 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+	    android:descendantFocusability="blocksDescendants"
+	    android:layout_marginBottom="6dp"
+		>
+			<TextView
+				android:id="@+id/title"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
 				android:clickable="false"
 				android:focusable="false"
 				android:focusableInTouchMode="false"
-			    android:descendantFocusability="blocksDescendants"
-                >
-
-                <TextView
-                    android:id="@+id/title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:clickable="false"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
-                    android:textColor="#000000"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal"
+				android:textColor="#000000"
+				android:textSize="@dimen/title_size"
+				android:textStyle="bold" 
+				android:ellipsize="end"
+				/>
+		</HorizontalScrollView>			
+		<LinearLayout 
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" 
+		    android:descendantFocusability="blocksDescendants" 
+		    >
+            <ImageView
+                android:id="@+id/avatar"
+                android:layout_width="@dimen/avatar_size"
+                android:layout_height="@dimen/avatar_size"
+                android:clickable="false"
+                android:contentDescription="@string/avatar"
+                android:focusable="false"
+                android:focusableInTouchMode="false" 
+                />
+  		    
+		    <LinearLayout 
+	            android:layout_width="0dp"
+	            android:layout_weight="1"
+	            android:layout_height="wrap_content"
+	            android:orientation="vertical" 
+			    android:descendantFocusability="blocksDescendants" 
+				android:layout_marginLeft="10dp"
+	        	>
+		        <LinearLayout
+		            android:layout_width="wrap_content"
+		            android:layout_height="@dimen/box_height"
+		            android:orientation="horizontal" 
+				    android:descendantFocusability="blocksDescendants"
+		            >
+		            	
+		            <LinearLayout
+		                android:id="@+id/vote_container"
+		                android:layout_width="@dimen/box_width"
+		                android:layout_height="match_parent"
+		                android:background="@color/voteback"
+		                android:gravity="center"
+		                android:orientation="vertical" >
+		
+		                <TextView
+		                    android:id="@+id/netvotes"
+		                    android:layout_width="wrap_content"
+		                    android:layout_height="wrap_content"
+		                    android:textColor="#000000"
+		                    android:textSize="@dimen/box_font"
+		                    android:textStyle="bold" />
+		
+		                <TextView
+		                    android:id="@+id/vote_label"
+		                    android:layout_width="wrap_content"
+		                    android:layout_height="wrap_content"
+		                    android:text="@string/votes"
+		                    android:textColor="#000000"
+		                    android:textSize="@dimen/box_label"
+		                    />
+		            </LinearLayout>
+		
+		            <LinearLayout
+		                android:id="@+id/answer_container"
+		                android:layout_width="@dimen/box_width"
+		                android:layout_height="match_parent"
+		                android:layout_marginLeft="10dp"
+		                android:background="@color/noanswerback"
+		                android:gravity="center"
+		                android:orientation="vertical" >
+		
+		                <TextView
+		                    android:id="@+id/answers"
+		                    android:layout_width="wrap_content"
+		                    android:layout_height="wrap_content"
+		                    android:textColor="#000000"
+		                    android:textSize="@dimen/box_font"
+		                    android:textStyle="bold" 
+		                    />
+		
+		                <TextView
+		                    android:id="@+id/answer_label"
+		                    android:layout_width="wrap_content"
+		                    android:layout_height="wrap_content"
+		                    android:text="@string/answers"
+		                    android:textColor="#000000"
+		                    android:textSize="@dimen/box_label"
+		                    />
+		            </LinearLayout>
+		
+		            <LinearLayout
+		                android:id="@+id/view_container"
+		                android:layout_width="@dimen/box_width"
+		                android:layout_height="match_parent"
+		                android:layout_marginLeft="10dp"
+		                android:background="@color/viewback"
+		                android:gravity="center"
+		                android:orientation="vertical" >
+		
+		                <TextView
+		                    android:id="@+id/views"
+		                    android:layout_width="wrap_content"
+		                    android:layout_height="wrap_content"
+		                    android:textColor="#000000"
+		                    android:textSize="@dimen/box_font"
+		                    android:textStyle="bold" 
+		                    />
+		
+		                <TextView
+		                    android:id="@+id/view_label"
+		                    android:layout_width="wrap_content"
+		                    android:layout_height="wrap_content"
+		                    android:text="@string/views"
+		                    android:textColor="#000000"
+		                    android:textSize="@dimen/box_label"
+		                    />
+		            </LinearLayout>
+				</LinearLayout>
+				<TextView
+					android:id="@+id/meta"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
 					android:clickable="false"
 					android:focusable="false"
 					android:focusableInTouchMode="false"
-				    android:descendantFocusability="blocksDescendants"
-                    >
-
-                    <ImageView
-                        android:id="@+id/avatar"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:layout_marginRight="10dp"
-                        android:contentDescription="@string/avatar"
-						android:clickable="false"
-						android:focusable="false"
-						android:focusableInTouchMode="false"
-                        />
-
-                    <TextView
-                        android:id="@+id/meta"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:clickable="false"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false"
-                        android:textColor="#000000"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-            </LinearLayout>
-        </HorizontalScrollView>
-    </LinearLayout>
-
+					android:textColor="#000000"
+					android:textSize="@dimen/meta_size"
+					android:layout_marginTop="2dp"
+                    />
+			</LinearLayout>            	            
+	    </LinearLayout>
+	</LinearLayout>
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_alignParentBottom="true"
         android:background="#AAAAAA" />
-
 </RelativeLayout>
