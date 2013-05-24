@@ -31,108 +31,6 @@
 			android:layout_gravity="center_vertical"
 	        />
 	</LinearLayout>
-	<ImageView
-		android:layout_height="1dp" 
-		android:layout_width="match_parent"
-		android:background="#EEEEEE"
-		/>
-	
-      <HorizontalScrollView 
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginLeft="10dp"
-          android:scrollbars="none"
-          >
-		<LinearLayout 
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:orientation="horizontal"
-			>
-			<Button 
-			    android:text="@string/edit" 
-			    android:id="@+id/edit"
-				android:layout_width="wrap_content" 
-				android:layout_height="wrap_content"
-				android:textSize="16sp" 
-				android:textColor="#666666"
-				android:background="#FFFFFF"
-				android:padding="6dp"
-				/>
-			<ImageView
-				android:layout_height="match_parent" 
-				android:layout_width="1dp"
-				android:layout_marginTop="4dp"
-				android:layout_marginBottom="4dp"
-				android:background="#EEEEEE"
-				/>
-			<Button 
-			    android:text="@string/flag" 
-			    android:id="@+id/flag"
-				android:layout_width="wrap_content" 
-				android:layout_height="wrap_content"
-				android:textSize="16sp" 
-				android:textColor="#666666"
-				android:background="#FFFFFF"
-				android:padding="6dp"
-				/>
-			<ImageView
-				android:layout_height="match_parent" 
-				android:layout_width="1dp"
-				android:layout_marginTop="4dp"
-				android:layout_marginBottom="4dp"
-				android:background="#EEEEEE"
-				/>
-			<Button 
-			    android:text="@string/hide" 
-			    android:id="@+id/hide"
-				android:layout_width="wrap_content" 
-				android:layout_height="wrap_content"
-				android:textSize="16sp" 
-				android:textColor="#666666"
-				android:background="#FFFFFF"
-				android:padding="6dp"
-				/>
-			<ImageView
-				android:layout_height="match_parent" 
-				android:layout_width="1dp"
-				android:layout_marginTop="4dp"
-				android:layout_marginBottom="4dp"
-				android:background="#EEEEEE"
-				/>
-			<Button 
-			    android:text="@string/ask_related" 
-			    android:id="@+id/ask_related"
-				android:layout_width="wrap_content" 
-				android:layout_height="wrap_content"
-				android:textSize="16sp" 
-				android:textColor="#666666"
-				android:background="#FFFFFF"
-				android:padding="6dp"
-				/>
-			<ImageView
-				android:layout_height="match_parent" 
-				android:layout_width="1dp"
-				android:layout_marginTop="4dp"
-				android:layout_marginBottom="4dp"
-				android:background="#EEEEEE"
-				/>
-			<Button 
-			    android:text="@string/comment" 
-			    android:id="@+id/comment"
-				android:layout_width="wrap_content" 
-				android:layout_height="wrap_content"
-				android:textSize="16sp" 
-				android:textColor="#666666"
-				android:background="#FFFFFF"
-				android:padding="6dp"
-				/>
-		</LinearLayout>
-	</HorizontalScrollView>	
-	<ImageView
-		android:layout_height="1dp" 
-		android:layout_width="match_parent"
-		android:background="#EEEEEE"
-		/>		
 	<LinearLayout 
 		android:orientation="horizontal"
 		android:layout_height="wrap_content"
@@ -215,6 +113,25 @@
         android:padding="10dp"
         android:textColor="#000000"
         android:textSize="@dimen/content_size" />
+	<ImageView
+		android:layout_height="1dp" 
+		android:layout_width="match_parent"
+		android:background="#EEEEEE"
+		/>
+	
+      <HorizontalScrollView
+          android:id="@+id/buttons"
+          android:layout_width="match_parent"
+          android:layout_height="@dimen/button_height"
+          android:scrollbars="none"
+          >
+
+	</HorizontalScrollView>	
+	<ImageView
+		android:layout_height="1dp" 
+		android:layout_width="match_parent"
+		android:background="#EEEEEE"
+		/>		    
 	<LinearLayout
         android:id="@+id/comments"
         android:layout_width="match_parent"

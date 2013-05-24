@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_height="@dimen/button_height" 
+	android:layout_width="wrap_content"
+	android:gravity="center_vertical"
+	android:paddingTop="4dp"
+	>
+	<ImageView
+		android:layout_height="@dimen/button_seperator_height" 
+		android:layout_width="1dp"
+		android:background="#EEEEEE"
+		android:layout_gravity="center_vertical"
+		/>
+</LinearLayout>

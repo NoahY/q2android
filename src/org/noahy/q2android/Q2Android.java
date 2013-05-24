@@ -48,6 +48,7 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -82,13 +83,8 @@ public class Q2Android extends SherlockListActivity {
 	private Button questionVoteDown;
 	private ImageView questionVoteSpacer;
 
-	private Button questionEdit;
-	private Button questionFlag;
-	private Button questionClose;
-	private Button questionHide;
-	private Button questionAnswer;
-	private Button questionComment;
-	
+	private HorizontalScrollView questionButtons;
+
 	private ImageButton questionFavorite;
 
 	private LinearLayout answerContainer;
@@ -150,14 +146,9 @@ public class Q2Android extends SherlockListActivity {
 		questionVoteUp = (Button) findViewById(R.id.qvote_up_button);
 		questionVoteDown = (Button) findViewById(R.id.qvote_down_button);
 		questionVoteSpacer = (ImageView) findViewById(R.id.qbutton_spacer);
+		
+		questionButtons = (HorizontalScrollView) findViewById(R.id.qbuttons);
 
-		questionEdit = (Button) findViewById(R.id.qedit);
-		questionFlag = (Button) findViewById(R.id.qflag);
-		questionClose = (Button) findViewById(R.id.qclose);
-		questionHide = (Button) findViewById(R.id.qhide);
-		questionAnswer = (Button) findViewById(R.id.qanswer);
-		questionComment = (Button) findViewById(R.id.qcomment);
-	
 		questionFavorite = (ImageButton) findViewById(R.id.starrer);
 		commentContainer = (LinearLayout) findViewById(R.id.qcomments);
 		answerContainer = (LinearLayout) findViewById(R.id.acontainer);
@@ -486,13 +477,14 @@ public class Q2Android extends SherlockListActivity {
 
 					adapter = new StreamListAdapter(activity,list);
 					setListAdapter(adapter);
-					
+
 					if(map.containsKey("acted"))
 						position = (Integer)map.get("acted");
 					else if(!isLandscape && !isQuestion)
 						break;
 					else
 						position = 0;
+						
 					
 					Object cobj = getListView().getItemAtPosition(position);
 					if(!(cobj instanceof HashMap))
@@ -501,7 +493,6 @@ public class Q2Android extends SherlockListActivity {
 					isQuestion = true;
 					adjustLayout();
 					loadQuestion();
-						
 					
 					toast = getString(R.string.updated);
 					
@@ -708,67 +699,11 @@ public class Q2Android extends SherlockListActivity {
 				}
 				
 			});
-			questionAnswer.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(final View v) {
-					
-					final EditText input = new EditText(activity);
-					input.setHeight(200);
-					input.setGravity(Gravity.TOP);
-					new AlertDialog.Builder(activity)
-				    .setTitle(R.string.post_answer)
-				    .setView(input)
-				    .setPositiveButton(R.string.submit, new DialogInterface.OnClickListener() {
-				        public void onClick(DialogInterface dialog, int whichButton) {
-							HashMap<String,Object> data = new HashMap<String,Object>();
-							HashMap<String,Object> info = new HashMap<String,Object>();
-							info.put("content", input.getText().toString());
-							info.put("type", "A");
-							
-							data.put("action_data", info);
-							data.put("action","post");
-							data.put("action_id", (String)rawMap.get("postid"));
-							getQuestions(data,currentScope);
-
-							hideKeyboard(input);
-
-
-				        }
-				    }).setNegativeButton(android.R.string.no, null).show();	
-				}
-			});
 			
-			questionComment.setOnClickListener(new OnClickListener() {
+			// buttons
+			questionButtons.removeAllViews();
+			questionButtons.addView(getPostButtons(currentQuestion));
 
-				@Override
-				public void onClick(View v) {
-					
-					final EditText input = new EditText(activity);
-					input.setHeight(200);
-					input.setGravity(Gravity.TOP);
-					new AlertDialog.Builder(activity)
-				    .setTitle(R.string.post_comment)
-				    .setView(input)
-				    .setPositiveButton(R.string.submit, new DialogInterface.OnClickListener() {
-				        public void onClick(DialogInterface dialog, int whichButton) {
-							HashMap<String,Object> data = new HashMap<String,Object>();
-							HashMap<String,Object> info = new HashMap<String,Object>();
-							info.put("content", input.getText().toString());
-							info.put("type", "C");
-							info.put("parentid", questionId);
-							
-							data.put("action_data", info);
-							data.put("action","post");
-							data.put("action_id", questionId);
-							getQuestions(data,currentScope);
-
-							hideKeyboard(input);
-
-				        }
-				    }).setNegativeButton(android.R.string.no, null).show();	
-				}
-			});
 			
 			// favorite
 			
@@ -824,10 +759,11 @@ public class Q2Android extends SherlockListActivity {
 				Button voteDown = (Button) answerView.findViewById(R.id.vote_down_button);
 				ImageButton answerSelect = (ImageButton) answerView.findViewById(R.id.selector);
 
-				Button commentButton = (Button) answerView.findViewById(R.id.comment);
-
 				ImageView voteSpacer = (ImageView) answerView.findViewById(R.id.button_spacer);
 				ImageView avatarView = (ImageView) answerView.findViewById(R.id.avatar);
+				
+				HorizontalScrollView buttonsView = (HorizontalScrollView) answerView.findViewById(R.id.buttons);
+				
 				try {
 					final HashMap<?,?> rawMap = (HashMap<?, ?>) answer.get("raw");
 					
@@ -866,6 +802,8 @@ public class Q2Android extends SherlockListActivity {
 					String meta = Q2AStrings.getMetaString(activity, answer);
 					Spanned metas = Html.fromHtml(meta);
 
+					// clickables
+					
 					voteUp.setOnClickListener(new OnClickListener() {
 
 						@Override
@@ -874,10 +812,11 @@ public class Q2Android extends SherlockListActivity {
 							HashMap<String,Object> info = new HashMap<String,Object>();
 							info.put("vote", upvote);
 							info.put("type", "A");
+							info.put("postid", (String)rawMap.get("postid"));
 							
 							data.put("action_data", info);
 							data.put("action","vote");
-							data.put("action_id", (String)rawMap.get("postid"));
+							data.put("action_id", currentQuestionId);
 							getQuestions(data,currentScope);
 							
 						}
@@ -892,46 +831,20 @@ public class Q2Android extends SherlockListActivity {
 							HashMap<String,Object> info = new HashMap<String,Object>();
 							info.put("vote", downvote);
 							info.put("type", "A");
+							info.put("postid", (String)rawMap.get("postid"));
 							
 							data.put("action_data", info);
 							data.put("action","vote");
-							data.put("action_id", (String)rawMap.get("postid"));
+							data.put("action_id", currentQuestionId);
 							getQuestions(data,currentScope);
 							
 						}
 						
 					});
+
+					// buttons
 					
-					commentButton.setOnClickListener(new OnClickListener() {
-
-						@Override
-						public void onClick(View v) {
-							
-							final EditText input = new EditText(activity);
-							input.setHeight(200);
-							input.setGravity(Gravity.TOP);
-							new AlertDialog.Builder(activity)
-						    .setTitle(R.string.post_comment)
-						    .setView(input)
-						    .setPositiveButton(R.string.submit, new DialogInterface.OnClickListener() {
-						        public void onClick(DialogInterface dialog, int whichButton) {
-									HashMap<String,Object> data = new HashMap<String,Object>();
-									HashMap<String,Object> info = new HashMap<String,Object>();
-									info.put("content", input.getText().toString());
-									info.put("type", "C");
-									info.put("parentid", answerId);
-									
-									data.put("action_data", info);
-									data.put("action","post");
-									data.put("action_id", questionId);
-									getQuestions(data,currentScope);
-
-									hideKeyboard(input);
-
-						        }
-						    }).setNegativeButton(android.R.string.no, null).show();	
-						}
-					});
+					buttonsView.addView(getPostButtons(answer));
 					
 					// selector
 					if(answerId == selChildId)
@@ -995,4 +908,108 @@ public class Q2Android extends SherlockListActivity {
 		
 	}
 	
+	private LinearLayout getPostButtons(HashMap<?,?> post) {
+		boolean first = true;
+		final HashMap<?,?> rawMap = (HashMap<?, ?>) post.get("raw");
+
+		LayoutInflater inflater = getLayoutInflater();
+		LinearLayout buttons = (LinearLayout) inflater.inflate(R.layout.buttons, null);
+		LinearLayout seperator = (LinearLayout) inflater.inflate(R.layout.button_separator, null);
+
+		
+		if((Boolean)rawMap.get("editbutton")) {
+		}
+		if((Boolean)rawMap.get("flagbutton")) {
+		}
+		if((Boolean)rawMap.get("closeable")) {
+		}
+		if((Boolean)rawMap.get("hideable")) {
+		}
+
+		
+		if((Boolean)rawMap.get("answerbutton")) {
+			Button abutton = (Button) inflater.inflate(R.layout.button, null);
+			abutton.setText(getString(R.string.answer));
+
+			abutton.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(final View v) {
+					
+					final EditText input = new EditText(activity);
+					input.setHeight(200);
+					input.setGravity(Gravity.TOP);
+					new AlertDialog.Builder(activity)
+				    .setTitle(R.string.post_answer)
+				    .setView(input)
+				    .setPositiveButton(R.string.submit, new DialogInterface.OnClickListener() {
+				        public void onClick(DialogInterface dialog, int whichButton) {
+							HashMap<String,Object> data = new HashMap<String,Object>();
+							HashMap<String,Object> info = new HashMap<String,Object>();
+							info.put("content", input.getText().toString());
+							info.put("type", "A");
+							
+							data.put("action_data", info);
+							data.put("action","post");
+							data.put("action_id", (String)rawMap.get("postid"));
+							getQuestions(data,currentScope);
+	
+							hideKeyboard(input);
+	
+	
+				        }
+				    }).setNegativeButton(android.R.string.no, null).show();	
+				}
+			});
+			if(!first)
+				buttons.addView(seperator);
+			else
+				first = false;
+			buttons.addView(abutton);
+		}
+		
+		if((Boolean)rawMap.get("commentbutton")) {
+			Button cbutton = (Button) inflater.inflate(R.layout.button, null);
+			cbutton.setText(getString(R.string.comment));
+
+			cbutton.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					
+					final EditText input = new EditText(activity);
+					input.setHeight(200);
+					input.setGravity(Gravity.TOP);
+					new AlertDialog.Builder(activity)
+				    .setTitle(R.string.post_comment)
+				    .setView(input)
+				    .setPositiveButton(R.string.submit, new DialogInterface.OnClickListener() {
+				        public void onClick(DialogInterface dialog, int whichButton) {
+							HashMap<String,Object> data = new HashMap<String,Object>();
+							HashMap<String,Object> info = new HashMap<String,Object>();
+							info.put("content", input.getText().toString());
+							info.put("type", "C");
+							info.put("parentid", (String)rawMap.get("postid"));
+							
+							data.put("action_data", info);
+							data.put("action","post");
+							data.put("action_id", currentQuestionId);
+							getQuestions(data,currentScope);
+
+							hideKeyboard(input);
+
+				        }
+				    }).setNegativeButton(android.R.string.no, null).show();	
+				}
+			});
+			if(!first)
+				buttons.addView(seperator);
+			else
+				first = false;
+			buttons.addView(cbutton);
+		}
+
+		return buttons;
+		
+	}
 }

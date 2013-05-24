@@ -71,124 +71,6 @@
 				        />
 				</LinearLayout>
 			</LinearLayout>
-			<ImageView
-				android:layout_height="1dp" 
-				android:layout_width="match_parent"
-				android:background="#EEEEEE"
-				/>
-    			
-	        <HorizontalScrollView 
-	            android:layout_width="match_parent"
-	            android:layout_height="match_parent"
-	            android:scrollbars="none"
-	            >
-	            <LinearLayout
-	                android:layout_width="wrap_content"
-	                android:layout_height="wrap_content"
-	                android:orientation="horizontal"
-	                >
-	    			<Button 
-					    android:text="@string/edit" 
-					    android:id="@+id/qedit"
-						android:layout_width="wrap_content" 
-						android:layout_height="wrap_content"
-						android:textSize="16sp" 
-						android:textColor="#666666"
-						android:background="#FFFFFF"
-						android:padding="6dp"
-						/>
-					<ImageView
-						android:layout_height="match_parent" 
-						android:layout_width="1dp"
-						android:layout_marginTop="4dp"
-						android:layout_marginBottom="4dp"
-						android:background="#EEEEEE"
-						/>
-					<Button 
-					    android:text="@string/flag" 
-					    android:id="@+id/qflag"
-						android:layout_width="wrap_content" 
-						android:layout_height="wrap_content"
-						android:textSize="16sp" 
-						android:textColor="#666666"
-						android:background="#FFFFFF"
-						android:padding="6dp"
-						/>
-					<ImageView
-						android:layout_height="match_parent" 
-						android:layout_width="1dp"
-						android:layout_marginTop="4dp"
-						android:layout_marginBottom="4dp"
-						android:background="#EEEEEE"
-						/>
-					<Button 
-					    android:text="@string/close" 
-					    android:id="@+id/qclose"
-						android:layout_width="wrap_content" 
-						android:layout_height="wrap_content"
-						android:textSize="16sp" 
-						android:textColor="#666666"
-						android:background="#FFFFFF"
-						android:padding="6dp"
-						/>
-					<ImageView
-						android:layout_height="match_parent" 
-						android:layout_width="1dp"
-						android:layout_marginTop="4dp"
-						android:layout_marginBottom="4dp"
-						android:background="#EEEEEE"
-						/>
-					<Button 
-					    android:text="@string/hide" 
-					    android:id="@+id/qhide"
-						android:layout_width="wrap_content" 
-						android:layout_height="wrap_content"
-						android:textSize="16sp" 
-						android:textColor="#666666"
-						android:background="#FFFFFF"
-						android:padding="6dp"
-						/>
-					<ImageView
-						android:layout_height="match_parent" 
-						android:layout_width="1dp"
-						android:layout_marginTop="4dp"
-						android:layout_marginBottom="4dp"
-						android:background="#EEEEEE"
-						/>
-					<Button 
-					    android:text="@string/answer" 
-					    android:id="@+id/qanswer"
-						android:layout_width="wrap_content" 
-						android:layout_height="wrap_content"
-						android:textSize="16sp" 
-						android:textColor="#666666"
-						android:background="#FFFFFF"
-						android:padding="6dp"
-						/>
-					<ImageView
-						android:layout_height="match_parent" 
-						android:layout_width="1dp"
-						android:layout_marginTop="4dp"
-						android:layout_marginBottom="4dp"
-						android:background="#EEEEEE"
-						/>
-					<Button 
-					    android:text="@string/comment" 
-					    android:id="@+id/qcomment"
-						android:layout_width="wrap_content" 
-						android:layout_height="wrap_content"
-						android:textSize="16sp" 
-						android:textColor="#666666"
-						android:background="#FFFFFF"
-						android:padding="6dp"
-						/>						
-				</LinearLayout>
-			</HorizontalScrollView>					
-			<ImageView
-				android:layout_height="1dp" 
-				android:layout_width="match_parent"
-				android:background="#EEEEEE"
-				/>						
 			<LinearLayout 
 				android:orientation="horizontal"
 				android:layout_height="wrap_content"
@@ -275,6 +157,25 @@
 				android:textColor="#000000"
 				android:padding="10dp"
 		        />
+			<ImageView
+				android:layout_height="1dp" 
+				android:layout_width="match_parent"
+				android:background="#EEEEEE"
+				/>
+    			
+	        <HorizontalScrollView
+	            android:id="@+id/qbuttons"
+	            android:layout_width="match_parent"
+       		    android:layout_height="@dimen/button_height"
+	            android:scrollbars="none"
+	            >
+
+			</HorizontalScrollView>
+			<ImageView
+				android:layout_height="1dp" 
+				android:layout_width="match_parent"
+				android:background="#EEEEEE"
+				/>
 			<LinearLayout
 		        android:id="@+id/qcomments"
 		        android:layout_width="match_parent"

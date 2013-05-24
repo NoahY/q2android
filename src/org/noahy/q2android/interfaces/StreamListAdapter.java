@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,7 +41,7 @@ public class StreamListAdapter extends ArrayAdapter<Object> {
 
 		// Inflate the views from XML
 		View rowView = inflater.inflate(R.layout.stream_item, null);
-
+		
 		HashMap<?,?> entryMap = (HashMap<?, ?>) getItem(position);
 		
 		TextView titleView = (TextView) rowView.findViewById(R.id.title);
