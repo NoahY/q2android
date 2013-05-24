@@ -4,5 +4,7 @@
           android:state_pressed="true" />
     <item android:drawable="@drawable/starred"
           android:state_focused="true" />
+    <item android:drawable="@drawable/starred"
+          android:state_selected="true" />    
     <item android:drawable="@drawable/star" />
 </selector>

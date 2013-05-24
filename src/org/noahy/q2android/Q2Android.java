@@ -48,6 +48,7 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -88,6 +89,8 @@ public class Q2Android extends SherlockListActivity {
 	private Button questionAnswer;
 	private Button questionComment;
 	
+	private ImageButton questionFavorite;
+
 	private LinearLayout answerContainer;
 
 	protected static int currentScope;
@@ -111,7 +114,9 @@ public class Q2Android extends SherlockListActivity {
 	private ActionBar actionBar;
 
 	private HashMap<?,?> currentQuestion;
-
+	private int currentQuestionId;
+	private int selChildId;
+	
 	private LinearLayout commentContainer;
 
 	
@@ -153,6 +158,7 @@ public class Q2Android extends SherlockListActivity {
 		questionAnswer = (Button) findViewById(R.id.qanswer);
 		questionComment = (Button) findViewById(R.id.qcomment);
 	
+		questionFavorite = (ImageButton) findViewById(R.id.starrer);
 		commentContainer = (LinearLayout) findViewById(R.id.qcomments);
 		answerContainer = (LinearLayout) findViewById(R.id.acontainer);
 
@@ -483,7 +489,7 @@ public class Q2Android extends SherlockListActivity {
 					
 					if(map.containsKey("acted"))
 						position = (Integer)map.get("acted");
-					else if(!isLandscape)
+					else if(!isLandscape && !isQuestion)
 						break;
 					else
 						position = 0;
@@ -624,6 +630,12 @@ public class Q2Android extends SherlockListActivity {
 			
 			final HashMap<?,?> rawMap = (HashMap<?, ?>) currentQuestion.get("raw");
 			final int questionId = Integer.parseInt((String) rawMap.get("postid")); 
+			currentQuestionId = questionId;
+			
+			Object selchild = rawMap.get("selchildid");
+			if(selchild instanceof String && ((String)selchild).length() > 0)
+				selChildId = Integer.parseInt((String) selchild);
+			else selChildId = 0;
 			
     		String title = (String) rawMap.get("title");
 
@@ -758,6 +770,13 @@ public class Q2Android extends SherlockListActivity {
 				}
 			});
 			
+			// favorite
+			
+			Object favorite = currentQuestion.get("favorite"); 
+
+			if(favorite instanceof String && !((String)favorite).equals("0"))
+				questionFavorite.setSelected(true);
+			
         	String img = (String)currentQuestion.get("avatar");
 			
 			questionTitle.setText(title);
@@ -803,6 +822,7 @@ public class Q2Android extends SherlockListActivity {
 				TextView votesLabel = (TextView) answerView.findViewById(R.id.vote_label);
 				Button voteUp = (Button) answerView.findViewById(R.id.vote_up_button);
 				Button voteDown = (Button) answerView.findViewById(R.id.vote_down_button);
+				ImageButton answerSelect = (ImageButton) answerView.findViewById(R.id.selector);
 
 				Button commentButton = (Button) answerView.findViewById(R.id.comment);
 
@@ -829,7 +849,7 @@ public class Q2Android extends SherlockListActivity {
 		        		voteDown.setVisibility(View.GONE);
 		        	else if(uservote.equals("-1"))
 		        		voteUp.setVisibility(View.GONE);
-		        	else if(currentQuestion.get("vote_state").equals("disabled")) {
+		        	else if(answer.get("vote_state").equals("disabled")) {
 		        		voteDown.setVisibility(View.GONE);
 		        		voteUp.setVisibility(View.GONE);
 		        	}
@@ -913,7 +933,11 @@ public class Q2Android extends SherlockListActivity {
 						}
 					});
 					
-		        	String img = (String)answer.get("avatar");
+					// selector
+					if(answerId == selChildId)
+						answerSelect.setSelected(true);
+
+					String img = (String)answer.get("avatar");
 					
 					contentView.setText(content);
 					metaView.setText(metas);

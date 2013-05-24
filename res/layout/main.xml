@@ -65,7 +65,7 @@
 						android:layout_height="0dp"
 						android:layout_weight="1" 
 						android:textSize="@dimen/meta_size"
-						android:textStyle="bold"
+						android:textStyle="italic"
 						android:textColor="#000000"
 						android:gravity="bottom"
 				        />
@@ -256,7 +256,8 @@
 					android:layout_weight="1"
 					android:layout_height="match_parent"
 				    />
-				<ImageButton 
+				<ImageButton
+				    android:id="@+id/starrer"
 				    android:src="@drawable/starrer"
 					android:layout_width="24dp"
 					android:layout_height="24dp"
