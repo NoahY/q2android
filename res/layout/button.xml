@@ -4,6 +4,6 @@
 		android:layout_height="@dimen/button_height" 
 		android:textSize="16sp" 
 		android:textColor="#666666"
-		android:background="#FFFFFF"
+		android:background="#00FFFFFF"
 		android:padding="6dp"
 		/>

@@ -9,12 +9,9 @@ import org.noahy.q2android.interfaces.*;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockListActivity;
-import android.app.NotificationManager;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlarmManager;
 import android.app.AlertDialog;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -24,7 +21,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.text.Html;
 import android.text.Spanned;
@@ -35,6 +31,8 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.MenuInflater;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,7 +42,9 @@ import android.widget.LinearLayout.LayoutParams;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -109,11 +109,17 @@ public class Q2Android extends SherlockListActivity {
 
 	private ActionBar actionBar;
 
+	private int currentPage = 0;
 	private HashMap<?,?> currentQuestion;
 	private int currentQuestionId;
 	private int selChildId;
+	private Boolean isByUser;
 	
 	private LinearLayout commentContainer;
+
+	private SlidingMenu slideMenu;
+
+	private ListView filters;
 
 	
 	@SuppressLint("NewApi")
@@ -153,7 +159,35 @@ public class Q2Android extends SherlockListActivity {
 		commentContainer = (LinearLayout) findViewById(R.id.qcomments);
 		answerContainer = (LinearLayout) findViewById(R.id.acontainer);
 
-    	currentScope = Q2AStrings.QUESTIONS;
+        slideMenu = new SlidingMenu(this);
+        slideMenu.setMode(SlidingMenu.LEFT);
+        slideMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+        //menu.setShadowWidthRes(0);
+        //menu.setShadowDrawable(R.drawable.shadow);
+        slideMenu.setBehindWidthRes(R.dimen.slide_width);
+        slideMenu.setFadeDegree(0.35f);
+        slideMenu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
+        slideMenu.setMenu(R.layout.slide);
+
+        filters = (ListView) slideMenu.getMenu().findViewById(R.id.filters);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+             android.R.layout.simple_list_item_1,
+             Q2AStrings.getFilterDisplayStrings(this));
+        filters.setAdapter(adapter);
+        filters.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				currentScope = Q2AStrings.STREAMS[arg2];
+				getQuestions(null, currentScope);
+				slideMenu.showContent(true);
+			}
+        	
+        });
+        
+    	currentScope = Q2AStrings.CREATED;
     	lastScope = currentScope;
     	
     	registerForContextMenu(listView);
@@ -317,8 +351,17 @@ public class Q2Android extends SherlockListActivity {
 		super.onListItemClick(l, v, position, id);
 		Log.i(TAG,"clicked stream item");
 		Object obj = getListView().getItemAtPosition(position);
-		if(!(obj instanceof HashMap))
+		if(!(obj instanceof HashMap)) {
+			if(obj instanceof String && obj.equals("<more>")) {
+				currentPage++;
+				getQuestions(null, currentScope);
+			}
+			else if(obj instanceof String && obj.equals("<less>")) {
+				currentPage--;
+				getQuestions(null, currentScope);
+			}
 			return;
+		}
 		currentQuestion = (HashMap<?, ?>) obj;
 		isQuestion = true;
 		adjustLayout();
@@ -391,7 +434,7 @@ public class Q2Android extends SherlockListActivity {
 		Log.d(TAG,"getting for currentScope of "+which);
 		lastScope = which;
 		
-		getQuestions(new HashMap<String, Object>(), which);
+		getQuestions(null, which);
 
 	}
 	
@@ -404,11 +447,18 @@ public class Q2Android extends SherlockListActivity {
 
 		Log.i(TAG ,"getting questions for "+currentScope);
 		
+		if(data == null)
+			data = new HashMap<String, Object>();
+		
 		data.put("sort", Q2AStrings.getFilterRequestString(ascope));
-		data.put("user_data", "true");
+		data.put("meta_data", "true");
+		data.put("more", "true");
 		data.put("full", "true");
-		data.put("start", 0);
-		data.put("size", Integer.parseInt(prefs.getString("stream_max", "20")));
+		
+		int max = Integer.parseInt(prefs.getString("stream_max", "20"));
+		
+		data.put("start", currentPage*max);
+		data.put("size", max);
 		
 		Q2ARequest stream = new Q2ARequest(activity, mHandler, "q2a.getQuestions", data, MSG_QUESTIONS);
 		stream.execute();
@@ -529,8 +579,8 @@ public class Q2Android extends SherlockListActivity {
     };
 
 	private boolean isQuestion;
-
 	private boolean isLandscape = false;
+
 
 	private void adjustLayout() {
 		DisplayMetrics metrics = new DisplayMetrics();
@@ -627,6 +677,9 @@ public class Q2Android extends SherlockListActivity {
 			if(selchild instanceof String && ((String)selchild).length() > 0)
 				selChildId = Integer.parseInt((String) selchild);
 			else selChildId = 0;
+
+			isByUser = (Boolean) rawMap.get("isbyuser");
+
 			
     		String title = (String) rawMap.get("title");
 
@@ -672,10 +725,11 @@ public class Q2Android extends SherlockListActivity {
 					HashMap<String,Object> info = new HashMap<String,Object>();
 					info.put("vote", upvote);
 					info.put("type", "Q");
+					info.put("postid", questionId);
 					
 					data.put("action_data", info);
 					data.put("action","vote");
-					data.put("action_id", (String)rawMap.get("postid"));
+					data.put("action_id", questionId);
 					getQuestions(data,currentScope);
 					
 				}
@@ -690,10 +744,11 @@ public class Q2Android extends SherlockListActivity {
 					HashMap<String,Object> info = new HashMap<String,Object>();
 					info.put("vote", downvote);
 					info.put("type", "Q");
+					info.put("postid", questionId);
 					
 					data.put("action_data", info);
 					data.put("action","vote");
-					data.put("action_id", (String)rawMap.get("postid"));
+					data.put("action_id", questionId);
 					getQuestions(data,currentScope);
 					
 				}
@@ -781,13 +836,17 @@ public class Q2Android extends SherlockListActivity {
 		        	
 		        	Boolean voted = true;
 					String uservote = (String) rawMap.get("uservote");
-		        	if(uservote.equals("1"))
+		        	if(uservote.equals("1")) {
+		        		voteUp.setSelected(true);
 		        		voteDown.setVisibility(View.GONE);
-		        	else if(uservote.equals("-1"))
+		        	}
+		        	else if(uservote.equals("-1")) {
+		        		voteDown.setSelected(true);
 		        		voteUp.setVisibility(View.GONE);
+		        	}
 		        	else if(answer.get("vote_state").equals("disabled")) {
-		        		voteDown.setVisibility(View.GONE);
 		        		voteUp.setVisibility(View.GONE);
+		        		voteDown.setVisibility(View.GONE);
 		        	}
 		        	else {
 		        		voteSpacer.setVisibility(View.VISIBLE);
@@ -803,6 +862,7 @@ public class Q2Android extends SherlockListActivity {
 					Spanned metas = Html.fromHtml(meta);
 
 					// clickables
+					
 					
 					voteUp.setOnClickListener(new OnClickListener() {
 
@@ -846,10 +906,52 @@ public class Q2Android extends SherlockListActivity {
 					
 					buttonsView.addView(getPostButtons(answer));
 					
+					
 					// selector
-					if(answerId == selChildId)
-						answerSelect.setSelected(true);
 
+					if(isByUser) {
+						if(answerId == selChildId) {
+							answerView.setBackgroundColor(0xFFDDFFDD);
+							answerSelect.setVisibility(View.VISIBLE);
+							
+							answerSelect.setSelected(true);
+							
+							answerSelect.setOnClickListener(new OnClickListener() {
+	
+								@Override
+								public void onClick(View v) {
+									HashMap<String,Object> data = new HashMap<String,Object>();
+									data.put("action","select");
+									data.put("action_id", currentQuestionId);
+									getQuestions(data,currentScope);
+								}
+								
+							});
+						}
+						else if (selChildId == 0) {
+							answerSelect.setVisibility(View.VISIBLE);
+							answerSelect.setOnClickListener(new OnClickListener() {
+	
+								@Override
+								public void onClick(View v) {
+									HashMap<String,Object> data = new HashMap<String,Object>();
+									data.put("action_data", answerId);
+									data.put("action","select");
+									data.put("action_id", currentQuestionId);
+									getQuestions(data,currentScope);
+								}
+								
+							});
+						}
+					}
+					else if(answerId == selChildId) {
+						answerView.setBackgroundColor(0xFFDDFFDD);
+						answerSelect.setVisibility(View.VISIBLE);
+						answerSelect.setSelected(true);
+						answerSelect.setEnabled(false);
+					}
+
+					
 					String img = (String)answer.get("avatar");
 					
 					contentView.setText(content);

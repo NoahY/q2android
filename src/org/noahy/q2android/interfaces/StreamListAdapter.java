@@ -40,9 +40,22 @@ public class StreamListAdapter extends ArrayAdapter<Object> {
 		LayoutInflater inflater = activity.getLayoutInflater();
 
 		// Inflate the views from XML
-		View rowView = inflater.inflate(R.layout.stream_item, null);
+		View rowView;
 		
-		HashMap<?,?> entryMap = (HashMap<?, ?>) getItem(position);
+		Object item = getItem(position);
+		
+		if(item instanceof String) {
+			rowView =  inflater.inflate(R.layout.more_item, null);
+			if(item.equals("<less>"))
+				((TextView)rowView.findViewById(R.id.more)).setText(activity.getString(R.string.prev));
+				
+			else if(!item.equals("<more>"))
+				((TextView)rowView.findViewById(R.id.more)).setText((String)item);
+			return rowView;
+		}
+		
+		rowView =  inflater.inflate(R.layout.stream_item, null);
+		HashMap<?,?> entryMap = (HashMap<?, ?>) item;
 		
 		TextView titleView = (TextView) rowView.findViewById(R.id.title);
 		TextView metaView = (TextView) rowView.findViewById(R.id.meta);

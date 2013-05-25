@@ -98,8 +98,14 @@
 		
 	<!-- Filters -->
 	
-	<string name="questions">Questions</string>
-
+	<string name="created">Questions</string>
+	<string name="updated">Latest Updated</string>
+	<string name="acount">Most Answers</string>
+	<string name="flagcount">Most Flagged</string>
+	<string name="netvotes">Most Voted</string>
+	<string name="views">Most Viewed</string>
+	<string name="hotness">What\'s Hot</string>
+			
 	<!-- Buttons -->	
 	
 	<string name="edit">Edit</string>
@@ -127,6 +133,9 @@
 	<string name="answers">answers</string>
 	<string name="votes">votes</string>
 
+	<string name="prev">Prev. Page</string>
+	<string name="next">Next Page</string>
+		
 	<string name="one_view">view</string>
 	<string name="one_answer">answer</string>
 	<string name="one_vote">vote</string>

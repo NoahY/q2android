@@ -15,4 +15,5 @@
     <dimen name="content_size">16sp</dimen>
     <dimen name="button_height">32dp</dimen>
     <dimen name="button_seperator_height">24dp</dimen>
+    <dimen name="slide_width">200dp</dimen>
 </resources>

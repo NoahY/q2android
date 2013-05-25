@@ -5,6 +5,8 @@
     android:orientation="vertical"
 	android:paddingLeft="24dp"
 	android:paddingRight="12dp"
+	android:paddingStart="24dp"
+	android:paddingEnd="12dp"
     >
    	<TextView
         android:id="@+id/meta"

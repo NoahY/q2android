@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout 
+	xmlns:android="http://schemas.android.com/apk/res/android"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+    	android:descendantFocusability="blocksDescendants" 
+       android:background="#FFFFFF"
+       android:orientation="vertical"
+       android:padding="10dp"
+    >
+	<TextView
+		android:id="@+id/more"
+		android:text="@string/next"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:clickable="false"
+		android:focusable="false"
+		android:focusableInTouchMode="false"
+		android:textColor="#000000"
+		android:textSize="@dimen/box_title_size"
+		android:textStyle="bold"
+		android:gravity="center"
+        />
+</LinearLayout>

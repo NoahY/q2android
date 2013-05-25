@@ -1,10 +1,12 @@
 package org.noahy.q2android.interfaces;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.noahy.q2android.R;
 
 import android.app.Activity;
+import android.content.Context;
 import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
@@ -12,17 +14,34 @@ import android.util.Log;
 public class Q2AStrings {
 	
 	protected static String TAG = "Q2AStrings";
-	public static final int QUESTIONS = 1;
+	public static final int CREATED = 1;
+	public static final int UPDATED = 2;
+	public static final int ACOUNT = 3;
+	public static final int FLAGCOUNT = 4;
+	public static final int NETVOTES = 5;
+	public static final int VIEWS = 6;
+	public static final int HOTNESS = 7;
 
-	public static final Integer[] STREAMS = {QUESTIONS};
+	public static final Integer[] STREAMS = {CREATED, UPDATED, ACOUNT, FLAGCOUNT, NETVOTES, VIEWS, HOTNESS};
 	
 	public static int getFilterDisplayString(int filter) {
 		int string = 0;
 		
 		switch(filter) {
-			
-			case QUESTIONS:
-				return R.string.questions;
+			case CREATED:
+				return R.string.created;
+			case UPDATED:
+				return R.string.updated;
+			case ACOUNT:
+				return R.string.acount;
+			case FLAGCOUNT:
+				return R.string.flagcount;
+			case NETVOTES:
+				return R.string.netvotes;
+			case VIEWS:
+				return R.string.views;
+			case HOTNESS:
+				return R.string.hotness;
 		}
 		
 		return string;
@@ -32,13 +51,35 @@ public class Q2AStrings {
 		String string = "";
 		
 		switch(filter) {
-			case QUESTIONS:
+			case CREATED:
 				return "created";
+			case UPDATED:
+				return "updated";
+			case ACOUNT:
+				return "acount";
+			case FLAGCOUNT:
+				return "flagcount";
+			case NETVOTES:
+				return "netvotes";
+			case VIEWS:
+				return "views";
+			case HOTNESS:
+				return "hotness";
 		}
 		
 		return string;
 	}
 
+	public static ArrayList<String> getFilterDisplayStrings(Context context) {
+		ArrayList<String> array = new ArrayList<String>();
+		
+		for(int string: STREAMS) {
+			array.add(context.getString(getFilterDisplayString(string)));
+		}
+		return array;
+	}
+
+	
 	public static String getMetaString(Activity activity, HashMap<?, ?> entryMap) {
     	String metaorder = (String)entryMap.get("meta_order");
     	
