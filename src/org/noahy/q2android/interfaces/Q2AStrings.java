@@ -22,7 +22,7 @@ public class Q2AStrings {
 	public static final int VIEWS = 6;
 	public static final int HOTNESS = 7;
 
-	public static final Integer[] STREAMS = {CREATED, UPDATED, ACOUNT, FLAGCOUNT, NETVOTES, VIEWS, HOTNESS};
+	public static final Integer[] STREAMS = {CREATED, UPDATED, HOTNESS, VIEWS, NETVOTES, ACOUNT, FLAGCOUNT};
 	
 	public static int getFilterDisplayString(int filter) {
 		int string = 0;

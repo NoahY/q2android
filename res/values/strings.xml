@@ -41,16 +41,6 @@
 	<string name="autoUpdate">Auto Update</string>
 	<string name="autoUpdateDesc">Update stream on startup</string>
 		
-	<!-- User -->
-	
-	<string name="sprofile">%1$s\'s Profile</string>  
-	<string name="befriend">Befriend</string>  
-	<string name="unfriend">Unfriend</string>  
-	<string name="friending">Friending</string>  
-	<string name="message">Message</string>  
-	<string name="close">Close</string>  
-	<string name="really_delete_user">Really delete user account?</string>
-	
 	<!-- Help -->
 		
 	<string name="help">Help</string>
@@ -65,40 +55,22 @@
 		</body>
 		]]>
 	</string>
-	<!-- Toasts -->
 	
-	<string name="posted">Update posted</string>
-	<string name="updated">Stream updated</string>
-	<string name="got_messages">Retrieved %d messages</string>
-	<string name="post_deleted">Post deleted</string>
-	<string name="user_deleted">User deleted</string>
-	<string name="commented">Comment posted</string>
-	<string name="error">Something went wrong; please check your setup and the system log</string>
-	<string name="registered">Service registered.  Visit the user\'s settings page to accept the service.</string>
-	<string name="sent">Message Sent</string>  
-	<string name="got_notifications">Retrieved %s notifications</string>
 				
 	<!-- Errors -->				
 	
+	<string name="error">Something went wrong; please check your setup and the system log</string>
 	<string name="checkSetupInternet">No internet connection.</string>
 	<string name="noWebsite">Please specify a website in preferences.</string>
 	<string name="websiteSyntaxError">Invalid website URL</string>
-	<string name="connectionRejected">Connection rejected - check username</string>
 	
 	<!-- Misc -->	
 
 	<string name="avatar">Avatar</string>
 
-	<!-- Components -->
-	
-	<string name="activity">Activity</string>
-	<string name="friends">Friends</string>
-	<string name="groups">Groups</string>
-	<string name="messages">Messages</string>
-		
 	<!-- Filters -->
 	
-	<string name="created">Questions</string>
+	<string name="created">Latest Questions</string>
 	<string name="updated">Latest Updated</string>
 	<string name="acount">Most Answers</string>
 	<string name="flagcount">Most Flagged</string>
