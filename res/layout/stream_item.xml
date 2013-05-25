@@ -138,7 +138,7 @@
                    android:id="@+id/view_label"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
-                   android:text="@string/views"
+                   android:text="@string/num_views"
                    android:textColor="#000000"
                    android:textSize="@dimen/box_label"
                    />

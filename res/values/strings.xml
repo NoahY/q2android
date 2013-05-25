@@ -129,7 +129,7 @@
 									
 	<!-- Stream -->
 	
-	<string name="views">views</string>
+	<string name="num_views">views</string>
 	<string name="answers">answers</string>
 	<string name="votes">votes</string>
 

@@ -132,6 +132,7 @@ public class Q2Android extends SherlockListActivity {
 		actionBar = getSupportActionBar();
 		
 		actionBar.setHomeButtonEnabled(true);
+		actionBar.setDisplayHomeAsUpEnabled(true);
 		
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -257,7 +258,7 @@ public class Q2Android extends SherlockListActivity {
 		switch (item.getItemId()) {
 	        case android.R.id.home:
 	        	if(!isQuestion)
-	        		finish();
+	        		slideMenu.toggle(true);
 	        	else {
 	        		isQuestion = false;
 	        		adjustLayout();
@@ -596,18 +597,15 @@ public class Q2Android extends SherlockListActivity {
     		listView.setLayoutParams(new LayoutParams(px, LayoutParams.MATCH_PARENT));
     		listView.setVisibility(View.VISIBLE);
     		isQuestion = false;
-    		actionBar.setDisplayHomeAsUpEnabled(false);
     	}
     	else if(isQuestion){
     		questionPane.setVisibility(View.VISIBLE);
     		listView.setVisibility(View.GONE);
-    		actionBar.setDisplayHomeAsUpEnabled(true);
     	}
     	else {
     		questionPane.setVisibility(View.GONE);
     		listView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
     		listView.setVisibility(View.VISIBLE);
-    		actionBar.setDisplayHomeAsUpEnabled(false);
     	}
     	isLandscape  = land;
 	}
