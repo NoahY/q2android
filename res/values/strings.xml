@@ -77,7 +77,8 @@
 	<string name="netvotes">Most Voted</string>
 	<string name="views">Most Viewed</string>
 	<string name="hotness">What\'s Hot</string>
-			
+	<string name="favorites">Favorites</string>
+				
 	<!-- Buttons -->	
 	
 	<string name="edit">Edit</string>

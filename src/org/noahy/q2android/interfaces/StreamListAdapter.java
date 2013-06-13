@@ -82,7 +82,7 @@ public class StreamListAdapter extends ArrayAdapter<Object> {
         	
         	String img = (String)entryMap.get("avatar");
         	
-        	String meta = Q2AStrings.getMetaString(activity, entryMap);
+        	String meta = Q2AStrings.getMetaString(activity, entryMap, true);
 
         	Spanned metas = Html.fromHtml(meta);
         	

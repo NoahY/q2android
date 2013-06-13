@@ -61,7 +61,7 @@ public class Q2Android extends SherlockListActivity {
 	
 	protected String TAG = "Q2Android";
 
-	public static String versionName = "0.1";
+	public static String versionName = "0.6";
 	
 	private static SharedPreferences prefs;
 	private static Q2Android activity;
@@ -181,6 +181,7 @@ public class Q2Android extends SherlockListActivity {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
+				currentPage = 0;
 				currentScope = Q2AStrings.STREAMS[arg2];
 				getQuestions(null, currentScope);
 				slideMenu.showContent(true);
@@ -188,7 +189,7 @@ public class Q2Android extends SherlockListActivity {
         	
         });
         
-    	currentScope = Q2AStrings.CREATED;
+    	currentScope = Q2AStrings.UPDATED;
     	lastScope = currentScope;
     	
     	registerForContextMenu(listView);
@@ -257,12 +258,12 @@ public class Q2Android extends SherlockListActivity {
 		Intent intent;
 		switch (item.getItemId()) {
 	        case android.R.id.home:
-	        	if(!isQuestion)
+	        	if(!isQuestion || isLandscape)
 	        		slideMenu.toggle(true);
-	        	else {
-	        		isQuestion = false;
+	        	else
 	        		adjustLayout();
-	        	}
+
+	        	isQuestion = false;
 	            return true;
 
 			case (int)R.id.menuStream:
@@ -446,12 +447,12 @@ public class Q2Android extends SherlockListActivity {
 		
 		lastScope = ascope;
 
-		Log.i(TAG ,"getting questions for "+currentScope);
+		Log.i(TAG ,"getting questions for "+Q2AStrings.FILTERS[ascope]);
 		
 		if(data == null)
 			data = new HashMap<String, Object>();
 		
-		data.put("sort", Q2AStrings.getFilterRequestString(ascope));
+		data.put("sort", Q2AStrings.FILTERS[ascope]);
 		data.put("meta_data", "true");
 		data.put("more", "true");
 		data.put("full", "true");
@@ -548,7 +549,7 @@ public class Q2Android extends SherlockListActivity {
 					toast = getString(R.string.updated);
 					
 					currentScope = lastScope;
-					actionBar.setTitle(getString(R.string.app_name)+" - "+getString(Q2AStrings.getFilterDisplayString(currentScope)));
+					actionBar.setTitle(getString(R.string.app_name)+" - "+getString(Q2AStrings.STRINGS[currentScope]));
 					break;
 				case MSG_SCOPE:
 					if((msg.obj instanceof String)) { 
@@ -680,6 +681,12 @@ public class Q2Android extends SherlockListActivity {
 
 			
     		String title = (String) rawMap.get("title");
+			Spanned content = Q2AStrings.getEntryContent((String) currentQuestion.get("content"));
+
+			String meta = Q2AStrings.getMetaString(activity, currentQuestion, false);
+			Spanned metas = Html.fromHtml(meta);
+
+        	String img = (String)currentQuestion.get("avatar");
 
     		String votes = (String) rawMap.get("netvotes");
         	if(!votes.startsWith("-") && !votes.equals("0"))
@@ -704,16 +711,12 @@ public class Q2Android extends SherlockListActivity {
         		voted = false;
         	}
         	
+		// voting
+
         	final int upvote = voted?0:1;
         	final int downvote = voted?0:-1;
+
         	
-			Spanned content = Q2AStrings.getEntryContent((String) currentQuestion.get("content"));
-
-			String meta = Q2AStrings.getMetaString(activity, currentQuestion);
-			Spanned metas = Html.fromHtml(meta);
-
-			// buttons
-			
 			questionVoteUp.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -752,20 +755,58 @@ public class Q2Android extends SherlockListActivity {
 				}
 				
 			});
+
+		// action buttons
 			
-			// buttons
 			questionButtons.removeAllViews();
 			questionButtons.addView(getPostButtons(currentQuestion));
-
 			
-			// favorite
+		// favorite
 			
 			Object favorite = currentQuestion.get("favorite"); 
 
-			if(favorite instanceof String && !((String)favorite).equals("0"))
+			if(favorite instanceof String && !((String)favorite).equals("0")) { // is favorite
+				questionFavorite.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						HashMap<String,Object> data = new HashMap<String,Object>();
+						HashMap<String,Object> info = new HashMap<String,Object>();
+						
+						info.put("type", "Q");
+						info.put("postid", questionId);
+						
+						data.put("action_data", info);
+						data.put("action","favorite");
+						data.put("action_id", questionId);
+						getQuestions(data,currentScope);						
+					}
+					
+				});
 				questionFavorite.setSelected(true);
+			}
+			else {
+				questionFavorite.setOnClickListener(new OnClickListener() { // is not favorite
+
+					@Override
+					public void onClick(View v) {
+						HashMap<String,Object> data = new HashMap<String,Object>();
+						HashMap<String,Object> info = new HashMap<String,Object>();
+						
+						info.put("favorite", "true");
+						info.put("type", "Q");
+						info.put("postid", questionId);
+						
+						data.put("action_data", info);
+						data.put("action","favorite");
+						data.put("action_id", questionId);
+						getQuestions(data,currentScope);						
+					}
+					
+				});
+			}
 			
-        	String img = (String)currentQuestion.get("avatar");
+		// set texts
 			
 			questionTitle.setText(title);
 			questionContent.setText(content);
@@ -791,6 +832,7 @@ public class Q2Android extends SherlockListActivity {
 		}
 		catch(Exception e) {
 			e.printStackTrace();
+			((String)currentQuestion.get("test")).endsWith("test");
 		}
 		isQuestion = true;
 	}
@@ -856,7 +898,7 @@ public class Q2Android extends SherlockListActivity {
 		        	
 					Spanned content = Q2AStrings.getEntryContent((String) answer.get("content"));
 
-					String meta = Q2AStrings.getMetaString(activity, answer);
+					String meta = Q2AStrings.getMetaString(activity, answer, false);
 					Spanned metas = Html.fromHtml(meta);
 
 					// clickables
@@ -988,7 +1030,7 @@ public class Q2Android extends SherlockListActivity {
 				TextView metaView = (TextView) commentView.findViewById(R.id.meta);
 				TextView contentView = (TextView) commentView.findViewById(R.id.content);
 				
-				String meta = Q2AStrings.getMetaString(this, comment);
+				String meta = Q2AStrings.getMetaString(this, comment, false);
 				Spanned metas = Html.fromHtml(meta);
 				
 				Spanned content = Q2AStrings.getEntryContent((String) comment.get("content"));
