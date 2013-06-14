@@ -76,12 +76,10 @@ public class Q2Android extends SherlockListActivity {
 	private TextView questionMeta;
 	private TextView questionContent;
 	private TextView questionVotes;
-	private TextView questionVotesLabel;
 	private ImageView questionAvatar;
 
 	private Button questionVoteUp;
 	private Button questionVoteDown;
-	private ImageView questionVoteSpacer;
 
 	private HorizontalScrollView questionButtons;
 
@@ -112,14 +110,20 @@ public class Q2Android extends SherlockListActivity {
 	private int currentPage = 0;
 	private HashMap<?,?> currentQuestion;
 	private int currentQuestionId;
+	protected Object[] currentQuestionList;
+	private int currentPosition = 0;
+
 	private int selChildId;
 	private Boolean isByUser;
+	private Boolean isSelectable;
 	
 	private LinearLayout commentContainer;
 
 	private SlidingMenu slideMenu;
 
 	private ListView filters;
+
+
 
 	
 	@SuppressLint("NewApi")
@@ -148,11 +152,9 @@ public class Q2Android extends SherlockListActivity {
 		questionMeta = (TextView) findViewById(R.id.qmeta);
 		questionContent = (TextView) findViewById(R.id.qcontent);
 		questionVotes = (TextView) findViewById(R.id.qnetvotes);
-		questionVotesLabel = (TextView) findViewById(R.id.qvote_label);
 
 		questionVoteUp = (Button) findViewById(R.id.qvote_up_button);
 		questionVoteDown = (Button) findViewById(R.id.qvote_down_button);
-		questionVoteSpacer = (ImageView) findViewById(R.id.qbutton_spacer);
 		
 		questionButtons = (HorizontalScrollView) findViewById(R.id.qbuttons);
 
@@ -258,12 +260,14 @@ public class Q2Android extends SherlockListActivity {
 		Intent intent;
 		switch (item.getItemId()) {
 	        case android.R.id.home:
-	        	if(!isQuestion || isLandscape)
+	        	if(!isQuestion || isLandscape) {
 	        		slideMenu.toggle(true);
-	        	else
+	        		isQuestion = false;
+	        	}
+	        	else {
+	        		isQuestion = false;
 	        		adjustLayout();
-
-	        	isQuestion = false;
+	        	}
 	            return true;
 
 			case (int)R.id.menuStream:
@@ -352,6 +356,7 @@ public class Q2Android extends SherlockListActivity {
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
 		Log.i(TAG,"clicked stream item");
+		currentPosition  = position;
 		Object obj = getListView().getItemAtPosition(position);
 		if(!(obj instanceof HashMap)) {
 			if(obj instanceof String && obj.equals("<more>")) {
@@ -467,7 +472,27 @@ public class Q2Android extends SherlockListActivity {
 		showRefresh();
 	}
 
-	public static final int MSG_QUESTIONS = 1;
+	public void getQuestion(HashMap<String, Object> data) {
+		
+		if(refreshing)
+			return;
+		
+		Log.i(TAG ,"getting single question");
+		
+		if(data == null)
+			data = new HashMap<String, Object>();
+		
+		data.put("meta_data", "true");
+		data.put("full", "true");
+		
+		Q2ARequest stream = new Q2ARequest(activity, mHandler, "q2a.getQuestion", data, MSG_QUESTION);
+		stream.execute();
+		showRefresh();
+	}
+
+	
+	public static final int MSG_QUESTIONS = 0;
+	public static final int MSG_QUESTION = 1;
 	public static final int MSG_VOTE = 2;
 	public static final int MSG_SCOPE = 3;
 
@@ -526,7 +551,9 @@ public class Q2Android extends SherlockListActivity {
 							
 						}
 					}
-
+					
+					currentQuestionList = list;
+					
 					adapter = new StreamListAdapter(activity,list);
 					setListAdapter(adapter);
 
@@ -550,6 +577,44 @@ public class Q2Android extends SherlockListActivity {
 					
 					currentScope = lastScope;
 					actionBar.setTitle(getString(R.string.app_name)+" - "+getString(Q2AStrings.STRINGS[currentScope]));
+					break;
+				case MSG_QUESTION:
+					if(!(msg.obj instanceof HashMap)) {
+						Log.w(TAG,"message not a map: "+msg.obj.getClass());
+						if(msg.obj instanceof String)
+							toast = (String) msg.obj;
+						break;
+					}
+					
+					map = (HashMap<?, ?>) msg.obj;
+					obj = map.get("data");
+					
+					if(!(obj instanceof HashMap)) {
+						Log.w(TAG,"data not a HashMap: "+obj.getClass());
+						if(obj instanceof String)
+							toast = (String) obj;
+						break;
+					}
+					
+					HashMap<?, ?> aQuestion = (HashMap<?, ?>) obj;
+					
+					if(map.containsKey("user_data") && map.get("user_data") instanceof HashMap){
+						Log.i(TAG ,"got user data");
+						Map<?,?> user = (HashMap<?, ?>) map.get("user_data");
+
+						if(user.get("level") instanceof String) {
+							
+						}
+					}
+					
+					currentQuestionList[currentPosition] = aQuestion;
+					currentQuestion = aQuestion;
+					isQuestion = true;
+					adjustLayout();
+					loadQuestion();
+					
+					//toast = getString(R.string.updated);
+					
 					break;
 				case MSG_SCOPE:
 					if((msg.obj instanceof String)) { 
@@ -582,7 +647,6 @@ public class Q2Android extends SherlockListActivity {
 
 	private boolean isQuestion;
 	private boolean isLandscape = false;
-
 
 	private void adjustLayout() {
 		DisplayMetrics metrics = new DisplayMetrics();
@@ -666,6 +730,7 @@ public class Q2Android extends SherlockListActivity {
 
 	
 	protected void loadQuestion() {
+		Log.d(TAG,"Loading question");
 		try {
 			
 			final HashMap<?,?> rawMap = (HashMap<?, ?>) currentQuestion.get("raw");
@@ -678,6 +743,7 @@ public class Q2Android extends SherlockListActivity {
 			else selChildId = 0;
 
 			isByUser = (Boolean) rawMap.get("isbyuser");
+			isSelectable = (Boolean) rawMap.get("aselectable");
 
 			
     		String title = (String) rawMap.get("title");
@@ -694,23 +760,26 @@ public class Q2Android extends SherlockListActivity {
 
     		questionVoteDown.setVisibility(View.VISIBLE);
     		questionVoteUp.setVisibility(View.VISIBLE);
-    		questionVoteSpacer.setVisibility(View.GONE);
         	
         	Boolean voted = true;
 			String uservote = (String) rawMap.get("uservote");
-        	if(uservote.equals("1"))
+        	if(uservote.equals("1")) {
+        		questionVoteUp.setSelected(true);
         		questionVoteDown.setVisibility(View.GONE);
-        	else if(uservote.equals("-1"))
+        	}
+        	else if(uservote.equals("-1")) {
+        		questionVoteDown.setSelected(true);
         		questionVoteUp.setVisibility(View.GONE);
+        	}
         	else if(currentQuestion.get("vote_state").equals("disabled")) {
-        		questionVoteDown.setVisibility(View.GONE);
+        		questionVoteUp.setSelected(false);
+        		questionVoteDown.setSelected(false);
         		questionVoteUp.setVisibility(View.GONE);
+        		questionVoteDown.setVisibility(View.GONE);
         	}
         	else {
-        		questionVoteSpacer.setVisibility(View.VISIBLE);
         		voted = false;
-        	}
-        	
+        	}       	
 		// voting
 
         	final int upvote = voted?0:1;
@@ -729,9 +798,10 @@ public class Q2Android extends SherlockListActivity {
 					info.put("postid", questionId);
 					
 					data.put("action_data", info);
+					data.put("postid", questionId);
 					data.put("action","vote");
 					data.put("action_id", questionId);
-					getQuestions(data,currentScope);
+					getQuestion(data);
 					
 				}
 				
@@ -748,9 +818,10 @@ public class Q2Android extends SherlockListActivity {
 					info.put("postid", questionId);
 					
 					data.put("action_data", info);
+					data.put("postid", questionId);
 					data.put("action","vote");
 					data.put("action_id", questionId);
-					getQuestions(data,currentScope);
+					getQuestion(data);
 					
 				}
 				
@@ -765,7 +836,7 @@ public class Q2Android extends SherlockListActivity {
 			
 			Object favorite = currentQuestion.get("favorite"); 
 
-			if(favorite instanceof String && !((String)favorite).equals("0")) { // is favorite
+			if(favorite instanceof String && ((String)favorite).equals("1")) { // is favorite
 				questionFavorite.setOnClickListener(new OnClickListener() {
 
 					@Override
@@ -777,9 +848,11 @@ public class Q2Android extends SherlockListActivity {
 						info.put("postid", questionId);
 						
 						data.put("action_data", info);
+						data.put("postid", questionId);
 						data.put("action","favorite");
 						data.put("action_id", questionId);
-						getQuestions(data,currentScope);						
+						getQuestion(data);
+						
 					}
 					
 				});
@@ -798,12 +871,14 @@ public class Q2Android extends SherlockListActivity {
 						info.put("postid", questionId);
 						
 						data.put("action_data", info);
+						data.put("postid", questionId);
 						data.put("action","favorite");
 						data.put("action_id", questionId);
-						getQuestions(data,currentScope);						
+						getQuestion(data);
 					}
 					
 				});
+				questionFavorite.setSelected(false);
 			}
 			
 		// set texts
@@ -812,9 +887,6 @@ public class Q2Android extends SherlockListActivity {
 			questionContent.setText(content);
 			questionMeta.setText(metas);
 			questionVotes.setText(votes);
-			
-        	if(votes.equals("+1") || votes.equals("-1"))
-        		questionVotesLabel.setText(activity.getString(R.string.one_vote));
 			
         	UrlImageViewHelper.setUrlDrawable(questionAvatar, img);
 
@@ -832,7 +904,7 @@ public class Q2Android extends SherlockListActivity {
 		}
 		catch(Exception e) {
 			e.printStackTrace();
-			((String)currentQuestion.get("test")).endsWith("test");
+
 		}
 		isQuestion = true;
 	}
@@ -849,12 +921,10 @@ public class Q2Android extends SherlockListActivity {
 				TextView metaView = (TextView) answerView.findViewById(R.id.meta);
 				TextView contentView = (TextView) answerView.findViewById(R.id.content);
 				TextView votesView = (TextView) answerView.findViewById(R.id.netvotes);
-				TextView votesLabel = (TextView) answerView.findViewById(R.id.vote_label);
 				Button voteUp = (Button) answerView.findViewById(R.id.vote_up_button);
 				Button voteDown = (Button) answerView.findViewById(R.id.vote_down_button);
 				ImageButton answerSelect = (ImageButton) answerView.findViewById(R.id.selector);
 
-				ImageView voteSpacer = (ImageView) answerView.findViewById(R.id.button_spacer);
 				ImageView avatarView = (ImageView) answerView.findViewById(R.id.avatar);
 				
 				HorizontalScrollView buttonsView = (HorizontalScrollView) answerView.findViewById(R.id.buttons);
@@ -872,7 +942,6 @@ public class Q2Android extends SherlockListActivity {
 
 		        	voteDown.setVisibility(View.VISIBLE);
 		    		voteUp.setVisibility(View.VISIBLE);
-		    		voteSpacer.setVisibility(View.GONE);
 		        	
 		        	Boolean voted = true;
 					String uservote = (String) rawMap.get("uservote");
@@ -889,7 +958,6 @@ public class Q2Android extends SherlockListActivity {
 		        		voteDown.setVisibility(View.GONE);
 		        	}
 		        	else {
-		        		voteSpacer.setVisibility(View.VISIBLE);
 		        		voted = false;
 		        	}
 		        	
@@ -915,9 +983,10 @@ public class Q2Android extends SherlockListActivity {
 							info.put("postid", (String)rawMap.get("postid"));
 							
 							data.put("action_data", info);
+							data.put("postid", questionId);
 							data.put("action","vote");
 							data.put("action_id", currentQuestionId);
-							getQuestions(data,currentScope);
+							getQuestion(data);
 							
 						}
 						
@@ -934,9 +1003,10 @@ public class Q2Android extends SherlockListActivity {
 							info.put("postid", (String)rawMap.get("postid"));
 							
 							data.put("action_data", info);
+							data.put("postid", questionId);
 							data.put("action","vote");
 							data.put("action_id", currentQuestionId);
-							getQuestions(data,currentScope);
+							getQuestion(data);
 							
 						}
 						
@@ -949,7 +1019,7 @@ public class Q2Android extends SherlockListActivity {
 					
 					// selector
 
-					if(isByUser) {
+					if(isSelectable) {
 						if(answerId == selChildId) {
 							answerView.setBackgroundColor(0xFFDDFFDD);
 							answerSelect.setVisibility(View.VISIBLE);
@@ -961,9 +1031,10 @@ public class Q2Android extends SherlockListActivity {
 								@Override
 								public void onClick(View v) {
 									HashMap<String,Object> data = new HashMap<String,Object>();
+									data.put("postid", questionId);
 									data.put("action","select");
 									data.put("action_id", currentQuestionId);
-									getQuestions(data,currentScope);
+									getQuestion(data);
 								}
 								
 							});
@@ -975,13 +1046,15 @@ public class Q2Android extends SherlockListActivity {
 								@Override
 								public void onClick(View v) {
 									HashMap<String,Object> data = new HashMap<String,Object>();
-									data.put("action_data", answerId);
+									data.put("postid", questionId);
 									data.put("action","select");
+									data.put("action_data", answerId);
 									data.put("action_id", currentQuestionId);
-									getQuestions(data,currentScope);
+									getQuestion(data);
 								}
 								
 							});
+							answerSelect.setSelected(false);
 						}
 					}
 					else if(answerId == selChildId) {
@@ -997,9 +1070,6 @@ public class Q2Android extends SherlockListActivity {
 					contentView.setText(content);
 					metaView.setText(metas);
 					votesView.setText(votes);
-					
-		        	if(votes.equals("+1") || votes.equals("-1"))
-		        		votesLabel.setText(getString(R.string.one_vote));
 					
 		        	UrlImageViewHelper.setUrlDrawable(avatarView, img);
 

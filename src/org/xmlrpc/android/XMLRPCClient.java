@@ -433,7 +433,7 @@ public class XMLRPCClient {
 				// deserialize result
 				Object obj = XMLRPCSerializer.deserialize(pullParser);
 				entity.consumeContent();
-				Log.i(TAG,"response = "+obj.toString());
+				//Log.i(TAG,"response = "+obj.toString());
 				return obj;
 			} else
 			if (tag.equals(TAG_FAULT)) {

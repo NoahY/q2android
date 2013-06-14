@@ -55,7 +55,6 @@ public class StreamListAdapter extends ArrayAdapter<Object> {
 		}
 		
 		rowView =  inflater.inflate(R.layout.stream_item, null);
-		HashMap<?,?> entryMap = (HashMap<?, ?>) item;
 		
 		TextView titleView = (TextView) rowView.findViewById(R.id.title);
 		TextView metaView = (TextView) rowView.findViewById(R.id.meta);
@@ -71,6 +70,7 @@ public class StreamListAdapter extends ArrayAdapter<Object> {
 		ImageView avatarView = (ImageView) rowView.findViewById(R.id.avatar);
 		LinearLayout answerLayout = (LinearLayout) rowView.findViewById(R.id.answer_container);
         try {
+    		HashMap<?,?> entryMap = (HashMap<?, ?>) item;
     		HashMap<?,?> rawMap = (HashMap<?, ?>) entryMap.get("raw");
         	String title = (String)rawMap.get("title");
         	String votes = (String)rawMap.get("netvotes");

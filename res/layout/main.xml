@@ -93,7 +93,7 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_margin="5dp"
+		        android:layout_marginTop="5dp"
                 android:background="#EEEEEE" />
 
             <LinearLayout
@@ -117,45 +117,24 @@
                         android:layout_height="30dp"
                         android:background="@drawable/voterup" />
 
-                    <ImageView
-                        android:id="@+id/qbutton_spacer"
-                        android:layout_width="12dp"
-                        android:layout_height="match_parent"
-                        android:visibility="gone" />
+                    <TextView
+                        android:id="@+id/qnetvotes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textColor="#000000"
+                        android:textSize="@dimen/box_font"
+                        android:textStyle="bold" 
+		                android:padding="8dp"
+                        />
+	
+	                    	
 
                     <Button
                         android:id="@+id/qvote_down_button"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:background="@drawable/voterdown" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/vote_container"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:gravity="center"
-                    android:orientation="vertical" >
-
-                    <TextView
-                        android:id="@+id/qnetvotes"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:textColor="#000000"
-                        android:textSize="@dimen/box_font"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/qvote_label"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="@string/votes"
-                        android:textColor="#000000"
-                        android:textSize="@dimen/box_label"
-                        android:textStyle="bold" />
                 </LinearLayout>
 
                 <View
