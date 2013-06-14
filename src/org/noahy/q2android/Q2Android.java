@@ -41,6 +41,7 @@ import android.view.View.OnClickListener;
 import android.widget.LinearLayout.LayoutParams;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
@@ -61,7 +62,7 @@ public class Q2Android extends SherlockListActivity {
 	
 	protected String TAG = "Q2Android";
 
-	public static String versionName = "0.6";
+	public static String versionName = "0.7";
 	
 	private static SharedPreferences prefs;
 	private static Q2Android activity;
@@ -280,7 +281,7 @@ public class Q2Android extends SherlockListActivity {
 				break;
 			case (int)R.id.menuNew:
 				LayoutInflater inflater = activity.getLayoutInflater();
-				LinearLayout questionLayout = (LinearLayout) inflater.inflate(R.layout.question_new, null);
+				final LinearLayout questionLayout = (LinearLayout) inflater.inflate(R.layout.question_new, null);
 				final EditText title = (EditText) questionLayout.findViewById(R.id.title);
 				final EditText content = (EditText) questionLayout.findViewById(R.id.content);
 				final EditText tags = (EditText) questionLayout.findViewById(R.id.tags);
@@ -307,7 +308,11 @@ public class Q2Android extends SherlockListActivity {
 		        		adjustLayout();						
 
 			        }
-			    }).setNegativeButton(android.R.string.no, null).show();	
+			    }).setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+			        public void onClick(DialogInterface dialog, int whichButton) {
+						hideKeyboard(questionLayout);
+			        }
+			    }).show();	
 				break;
 			case (int)R.id.menuLogin:
 				intent = new Intent(this, Q2ALoginActivity.class);
@@ -1150,6 +1155,7 @@ public class Q2Android extends SherlockListActivity {
 					
 					final EditText input = new EditText(activity);
 					input.setHeight(200);
+					input.setRawInputType(EditorInfo.TYPE_TEXT_FLAG_CAP_SENTENCES | EditorInfo.TYPE_TEXT_FLAG_MULTI_LINE);
 					input.setGravity(Gravity.TOP);
 					new AlertDialog.Builder(activity)
 				    .setTitle(R.string.post_answer)
@@ -1170,7 +1176,11 @@ public class Q2Android extends SherlockListActivity {
 	
 	
 				        }
-				    }).setNegativeButton(android.R.string.no, null).show();	
+				    }).setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+				        public void onClick(DialogInterface dialog, int whichButton) {
+							hideKeyboard(input);
+				        }
+				    }).show();	
 				}
 			});
 			if(!first)
@@ -1191,6 +1201,7 @@ public class Q2Android extends SherlockListActivity {
 					
 					final EditText input = new EditText(activity);
 					input.setHeight(200);
+					input.setRawInputType(EditorInfo.TYPE_TEXT_FLAG_CAP_SENTENCES | EditorInfo.TYPE_TEXT_FLAG_MULTI_LINE);
 					input.setGravity(Gravity.TOP);
 					new AlertDialog.Builder(activity)
 				    .setTitle(R.string.post_comment)
@@ -1211,7 +1222,11 @@ public class Q2Android extends SherlockListActivity {
 							hideKeyboard(input);
 
 				        }
-				    }).setNegativeButton(android.R.string.no, null).show();	
+				    }).setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+				        public void onClick(DialogInterface dialog, int whichButton) {
+							hideKeyboard(input);
+				        }
+				    }).show();	
 				}
 			});
 			if(!first)
