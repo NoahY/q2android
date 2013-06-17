@@ -1168,9 +1168,10 @@ public class Q2Android extends SherlockListActivity {
 							info.put("type", "A");
 							
 							data.put("action_data", info);
+							data.put("postid", currentQuestionId);
 							data.put("action","post");
 							data.put("action_id", (String)rawMap.get("postid"));
-							getQuestions(data,currentScope);
+							getQuestion(data);
 	
 							hideKeyboard(input);
 	
@@ -1215,9 +1216,10 @@ public class Q2Android extends SherlockListActivity {
 							info.put("parentid", (String)rawMap.get("postid"));
 							
 							data.put("action_data", info);
+							data.put("postid", currentQuestionId);
 							data.put("action","post");
-							data.put("action_id", currentQuestionId);
-							getQuestions(data,currentScope);
+							data.put("action_id", (String)rawMap.get("postid"));
+							getQuestion(data);
 
 							hideKeyboard(input);
 
