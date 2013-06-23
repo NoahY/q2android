@@ -124,6 +124,8 @@ public class Q2Android extends SherlockListActivity {
 
 	private ListView filters;
 
+	private LayoutInflater layoutInflater;
+
 
 
 	
@@ -134,6 +136,8 @@ public class Q2Android extends SherlockListActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 		
+		layoutInflater = getLayoutInflater();
+
 		actionBar = getSupportActionBar();
 		
 		actionBar.setHomeButtonEnabled(true);
@@ -280,8 +284,7 @@ public class Q2Android extends SherlockListActivity {
 				refreshStream(currentScope);
 				break;
 			case (int)R.id.menuNew:
-				LayoutInflater inflater = activity.getLayoutInflater();
-				final LinearLayout questionLayout = (LinearLayout) inflater.inflate(R.layout.question_new, null);
+				final LinearLayout questionLayout = (LinearLayout) layoutInflater.inflate(R.layout.question_new, null);
 				final EditText title = (EditText) questionLayout.findViewById(R.id.title);
 				final EditText content = (EditText) questionLayout.findViewById(R.id.content);
 				final EditText tags = (EditText) questionLayout.findViewById(R.id.tags);
@@ -298,6 +301,7 @@ public class Q2Android extends SherlockListActivity {
 						info.put("title", title.getText().toString());
 						info.put("content", content.getText().toString());
 						info.put("tags", tags.getText().toString());
+						info.put("format", prefs.getString("editor_type", ""));
 
 						data.put("action_data", info);
 						data.put("action","post");
@@ -716,8 +720,7 @@ public class Q2Android extends SherlockListActivity {
 		//Log.i(TAG,"showing refresh");
 		
 		/* Attach a rotating ImageView to the refresh item as an ActionView */
-		LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		ImageView iv = (ImageView) inflater.inflate(R.layout.rotate, null);
+		ImageView iv = (ImageView) layoutInflater.inflate(R.layout.rotate, null);
 		
 		Animation rotation = AnimationUtils.loadAnimation(this, R.animator.rotate);
 		rotation.setRepeatCount(Animation.INFINITE);
@@ -915,13 +918,12 @@ public class Q2Android extends SherlockListActivity {
 	}
 	
 	private void addAnswers(Object[] answers, final int questionId) {
-		LayoutInflater inflater = getLayoutInflater();
 		for(Object obj : answers) {
 			if(obj instanceof HashMap) {
 				HashMap<?,?> answer = (HashMap<?, ?>) obj;
 				
 				// Inflate the views from XML
-				LinearLayout answerView = (LinearLayout) inflater.inflate(R.layout.answer, null);
+				LinearLayout answerView = (LinearLayout) layoutInflater.inflate(R.layout.answer, null);
 
 				TextView metaView = (TextView) answerView.findViewById(R.id.meta);
 				TextView contentView = (TextView) answerView.findViewById(R.id.content);
@@ -1097,19 +1099,24 @@ public class Q2Android extends SherlockListActivity {
 
 	private void addComments(Object[] comments, LinearLayout view) {
 		
-		LayoutInflater inflater = getLayoutInflater();
 		for(Object obj : comments) {
 			if(obj instanceof HashMap) {
 				HashMap<?,?> comment = (HashMap<?, ?>) obj;
-				LinearLayout commentView = (LinearLayout) inflater.inflate(R.layout.comment, null);
+				LinearLayout commentView = (LinearLayout) layoutInflater.inflate(R.layout.comment, null);
 				TextView metaView = (TextView) commentView.findViewById(R.id.meta);
 				TextView contentView = (TextView) commentView.findViewById(R.id.content);
+				HorizontalScrollView buttonsView = (HorizontalScrollView) commentView.findViewById(R.id.buttons);
 				
 				String meta = Q2AStrings.getMetaString(this, comment, false);
 				Spanned metas = Html.fromHtml(meta);
 				
 				Spanned content = Q2AStrings.getEntryContent((String) comment.get("content"));
 
+				// buttons
+				
+				buttonsView.addView(getPostButtons(comment));
+				
+				// add text
 				
 	        	metaView.setText(metas);
 	        	contentView.setText(content);
@@ -1129,23 +1136,148 @@ public class Q2Android extends SherlockListActivity {
 		boolean first = true;
 		final HashMap<?,?> rawMap = (HashMap<?, ?>) post.get("raw");
 
-		LayoutInflater inflater = getLayoutInflater();
-		LinearLayout buttons = (LinearLayout) inflater.inflate(R.layout.buttons, null);
-		LinearLayout seperator = (LinearLayout) inflater.inflate(R.layout.button_separator, null);
-
+		LinearLayout buttons = (LinearLayout) layoutInflater.inflate(R.layout.buttons, null);
 		
 		if((Boolean)rawMap.get("editbutton")) {
+			Button abutton = (Button) layoutInflater.inflate(R.layout.button, null);
+			abutton.setText(getString(R.string.edit));
+
+			abutton.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(final View v) {
+					if(rawMap.get("basetype").equals("Q")) {
+						final LinearLayout questionLayout = (LinearLayout) layoutInflater.inflate(R.layout.question_new, null);
+						final EditText title = (EditText) questionLayout.findViewById(R.id.title);
+						final EditText content = (EditText) questionLayout.findViewById(R.id.content);
+						final EditText tags = (EditText) questionLayout.findViewById(R.id.tags);
+						title.setText((String) rawMap.get("title"));
+						content.setText((String) rawMap.get("content"));
+						tags.setText((String) rawMap.get("tags"));
+						
+						new AlertDialog.Builder(activity)
+					    .setTitle(R.string.new_question)
+					    .setView(questionLayout)
+					    .setPositiveButton(R.string.submit, new DialogInterface.OnClickListener() {
+			
+							public void onClick(DialogInterface dialog, int whichButton) {
+								HashMap<String,Object> data = new HashMap<String,Object>();
+								HashMap<String,Object> info = new HashMap<String,Object>();
+
+								info.put("type", "Q");
+								info.put("title", title.getText().toString());
+								info.put("content", content.getText().toString());
+								info.put("tags", tags.getText().toString());
+								info.put("format", (String) rawMap.get("format"));
+
+								data.put("action_data", info);
+								data.put("action","post");
+								getQuestions(data,currentScope);
+
+								hideKeyboard(title);
+				        		isQuestion = false;
+				        		adjustLayout();						
+
+					        }
+					    }).setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+					        public void onClick(DialogInterface dialog, int whichButton) {
+								hideKeyboard(questionLayout);
+					        }
+					    }).show();	
+					}
+					else {
+	
+						final EditText input = (EditText) layoutInflater.inflate(R.layout.post_form, null);
+						input.setText((String) rawMap.get("content"));
+						new AlertDialog.Builder(activity)
+					    .setTitle(R.string.post_edit)
+					    .setView(input)
+					    .setPositiveButton(R.string.submit, new DialogInterface.OnClickListener() {
+					        public void onClick(DialogInterface dialog, int whichButton) {
+								HashMap<String,Object> data = new HashMap<String,Object>();
+								HashMap<String,Object> info = new HashMap<String,Object>();
+								info.put("content", input.getText().toString());
+								info.put("type", rawMap.get("basetype"));
+								info.put("format", (String) rawMap.get("format"));
+								
+								data.put("action_data", info);
+								data.put("postid", currentQuestionId);
+								data.put("action","edit");
+								data.put("action_id", (String)rawMap.get("postid"));
+								getQuestion(data);
+		
+								hideKeyboard(input);
+		
+		
+					        }
+					    }).setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+					        public void onClick(DialogInterface dialog, int whichButton) {
+								hideKeyboard(input);
+					        }
+					    }).show();	
+					}
+				}
+			});
+			if(!first)
+				buttons.addView(layoutInflater.inflate(R.layout.button_separator, null));
+			else
+				first = false;
+			buttons.addView(abutton);
 		}
 		if((Boolean)rawMap.get("flagbutton")) {
+			Button abutton = (Button) layoutInflater.inflate(R.layout.button, null);
+			abutton.setText(getString(R.string.flag));
+
+			abutton.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					HashMap<String,Object> data = new HashMap<String,Object>();
+					
+					data.put("postid", currentQuestionId);
+					data.put("action","flag");
+					data.put("action_id", (String)rawMap.get("postid"));
+					getQuestion(data);					
+				}
+			});
+			if(!first)
+				buttons.addView(layoutInflater.inflate(R.layout.button_separator, null));
+			else
+				first = false;
+			buttons.addView(abutton);
+		}
+		else if((Boolean)rawMap.get("unflaggable")) {
+			Button abutton = (Button) layoutInflater.inflate(R.layout.button, null);
+			abutton.setText(getString(R.string.unflag));
+
+			abutton.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					HashMap<String,Object> data = new HashMap<String,Object>();
+					
+					data.put("postid", currentQuestionId);
+					data.put("action","unflag");
+					data.put("action_id", (String)rawMap.get("postid"));
+					getQuestion(data);								
+				}
+			});
+			if(!first)
+				buttons.addView(layoutInflater.inflate(R.layout.button_separator, null));
+			else
+				first = false;
+			buttons.addView(abutton);
 		}
 		if((Boolean)rawMap.get("closeable")) {
 		}
 		if((Boolean)rawMap.get("hideable")) {
 		}
+		if((Boolean)rawMap.get("deleteable")) {
+		}
 
 		
 		if((Boolean)rawMap.get("answerbutton")) {
-			Button abutton = (Button) inflater.inflate(R.layout.button, null);
+			Button abutton = (Button) layoutInflater.inflate(R.layout.button, null);
 			abutton.setText(getString(R.string.answer));
 
 			abutton.setOnClickListener(new OnClickListener() {
@@ -1153,10 +1285,7 @@ public class Q2Android extends SherlockListActivity {
 				@Override
 				public void onClick(final View v) {
 					
-					final EditText input = new EditText(activity);
-					input.setHeight(200);
-					input.setRawInputType(EditorInfo.TYPE_TEXT_FLAG_CAP_SENTENCES | EditorInfo.TYPE_TEXT_FLAG_MULTI_LINE);
-					input.setGravity(Gravity.TOP);
+					final EditText input = (EditText) layoutInflater.inflate(R.layout.post_form, null);
 					new AlertDialog.Builder(activity)
 				    .setTitle(R.string.post_answer)
 				    .setView(input)
@@ -1166,6 +1295,7 @@ public class Q2Android extends SherlockListActivity {
 							HashMap<String,Object> info = new HashMap<String,Object>();
 							info.put("content", input.getText().toString());
 							info.put("type", "A");
+							info.put("format", prefs.getString("editor_type", ""));
 							
 							data.put("action_data", info);
 							data.put("postid", currentQuestionId);
@@ -1185,14 +1315,14 @@ public class Q2Android extends SherlockListActivity {
 				}
 			});
 			if(!first)
-				buttons.addView(seperator);
+				buttons.addView(layoutInflater.inflate(R.layout.button_separator, null));
 			else
 				first = false;
 			buttons.addView(abutton);
 		}
 		
 		if((Boolean)rawMap.get("commentbutton")) {
-			Button cbutton = (Button) inflater.inflate(R.layout.button, null);
+			Button cbutton = (Button) layoutInflater.inflate(R.layout.button, null);
 			cbutton.setText(getString(R.string.comment));
 
 			cbutton.setOnClickListener(new OnClickListener() {
@@ -1200,10 +1330,7 @@ public class Q2Android extends SherlockListActivity {
 				@Override
 				public void onClick(View v) {
 					
-					final EditText input = new EditText(activity);
-					input.setHeight(200);
-					input.setRawInputType(EditorInfo.TYPE_TEXT_FLAG_CAP_SENTENCES | EditorInfo.TYPE_TEXT_FLAG_MULTI_LINE);
-					input.setGravity(Gravity.TOP);
+					final EditText input = (EditText) layoutInflater.inflate(R.layout.post_form, null);
 					new AlertDialog.Builder(activity)
 				    .setTitle(R.string.post_comment)
 				    .setView(input)
@@ -1214,7 +1341,8 @@ public class Q2Android extends SherlockListActivity {
 							info.put("content", input.getText().toString());
 							info.put("type", "C");
 							info.put("parentid", (String)rawMap.get("postid"));
-							
+							info.put("format", prefs.getString("editor_type", ""));
+
 							data.put("action_data", info);
 							data.put("postid", currentQuestionId);
 							data.put("action","post");
@@ -1222,7 +1350,6 @@ public class Q2Android extends SherlockListActivity {
 							getQuestion(data);
 
 							hideKeyboard(input);
-
 				        }
 				    }).setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
 				        public void onClick(DialogInterface dialog, int whichButton) {
@@ -1232,7 +1359,7 @@ public class Q2Android extends SherlockListActivity {
 				}
 			});
 			if(!first)
-				buttons.addView(seperator);
+				buttons.addView(layoutInflater.inflate(R.layout.button_separator, null));
 			else
 				first = false;
 			buttons.addView(cbutton);

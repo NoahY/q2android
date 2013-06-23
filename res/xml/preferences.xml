@@ -18,6 +18,11 @@
 	        android:title="@string/autoUpdate"
 	        android:summary="@string/autoUpdateDesc"
 	        />
+	    <EditTextPreference
+	        android:key="editor_type"
+	        android:title="@string/editorType"
+			android:summary="@string/editorTypeDesc"
+	        />
    	</PreferenceCategory>   
    	    	
 </PreferenceScreen>

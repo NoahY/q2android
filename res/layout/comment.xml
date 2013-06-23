@@ -15,11 +15,11 @@
 		android:textSize="@dimen/meta_size"
 		android:textStyle="bold"
 		android:textColor="#000000"
-	    android:background="#EEEEEE"
+	    android:background="#F9F9F9"
 		android:padding="8dp"
         />
 	<TextView
-	    android:background="#EEEEEE"
+	    android:background="#F9F9F9"
 	    android:id="@+id/content"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
@@ -29,6 +29,24 @@
 		android:textColor="#000000"
 		android:textSize="@dimen/comment_size"
 		android:padding="8dp"
-		android:layout_marginBottom="10dp"
 	    />
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#EEEEEE" />
+
+    <HorizontalScrollView
+        android:id="@+id/buttons"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_height"
+	    android:background="#F9F9F9"
+        android:scrollbars="none" >
+    </HorizontalScrollView>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#EEEEEE" 
+		android:layout_marginBottom="10dp"
+        />
 </LinearLayout>

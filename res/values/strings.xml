@@ -40,7 +40,11 @@
 	<string name="advPref">Advanced Preferences</string>
 	<string name="autoUpdate">Auto Update</string>
 	<string name="autoUpdateDesc">Update stream on startup</string>
-		
+
+	<string name="editorType">Editor Type</string>
+	<string name="editorTypeDesc">Leave blank for plain text</string>
+	
+			
 	<!-- Help -->
 		
 	<string name="help">Help</string>
@@ -85,6 +89,7 @@
 	<string name="hide">Hide</string>
 	<string name="ask_related">Ask Related</string>
 	<string name="flag">Flag</string>
+	<string name="unflag">Flag</string>
 	<string name="answer">Answer</string>
 	<string name="comment">Comment</string>
 	
@@ -93,11 +98,12 @@
 	<string name="new_question">New Question</string>
 	<string name="post_answer">Post Answer</string>
 	<string name="post_comment">Post Comment</string>
-	
+	<string name="post_edit">Edit Post</string>
+		
 	<string name="submit">Submit</string>
 
 	<string name="title_hint">Title…</string>
-	<string name="content_hint">Question body…</string>
+	<string name="content_hint">Content…</string>
 	<string name="tags_hint">Spaced tags…</string>
 									
 	<!-- Stream -->
