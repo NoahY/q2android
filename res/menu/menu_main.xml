@@ -14,7 +14,7 @@
 		android:id="@+id/menuNew"/>
 	<item 
 		android:icon="@android:drawable/ic_menu_add"
-		android:title="@string/login"
+		android:title="@string/accounts"
   		android:showAsAction="never" 
         android:orderInCategory="3"
 		android:id="@+id/menuLogin"/>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-	<PreferenceCategory android:title="@string/streamPref">
+	<PreferenceCategory android:title="@string/streamPref"/>
 	    <EditTextPreference
 	        android:key="stream_max"
 	        android:title="@string/streamMax"
@@ -10,8 +10,7 @@
 	        android:title="@string/contentMax"
 			android:summary="@string/contentMaxDesc"
 	        />
-   	</PreferenceCategory>
-	<PreferenceCategory android:title="@string/advPref">
+	<PreferenceCategory android:title="@string/advPref" />
 	    <CheckBoxPreference
 	        android:key="auto_update"
 	        android:defaultValue="true"
@@ -23,6 +22,4 @@
 	        android:title="@string/editorType"
 			android:summary="@string/editorTypeDesc"
 	        />
-   	</PreferenceCategory>   
-   	    	
 </PreferenceScreen>

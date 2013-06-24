@@ -5,13 +5,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.noahy.q2android.authentication.AccountGeneral;
 import org.noahy.q2android.interfaces.*;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockListActivity;
+
+import android.provider.Settings;
+import android.accounts.Account;
+import android.accounts.AccountManager;
+import android.accounts.AccountManagerCallback;
+import android.accounts.AccountManagerFuture;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -137,7 +145,7 @@ public class Q2Android extends SherlockListActivity {
 		setContentView(R.layout.main);
 		
 		layoutInflater = getLayoutInflater();
-
+		mAccountManager = AccountManager.get(this);
 		actionBar = getSupportActionBar();
 		
 		actionBar.setHomeButtonEnabled(true);
@@ -319,9 +327,7 @@ public class Q2Android extends SherlockListActivity {
 			    }).show();	
 				break;
 			case (int)R.id.menuLogin:
-				intent = new Intent(this, Q2ALoginActivity.class);
-				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				startActivityForResult(intent, RESULT_LOGIN);
+				showAccountPicker(AccountGeneral.AUTHTOKEN_TYPE_FULL_ACCESS, false);
 				break;
 			case (int)R.id.menuPrefs:
 				intent = new Intent(this, Q2ASettingsActivity.class);
@@ -657,6 +663,8 @@ public class Q2Android extends SherlockListActivity {
 	private boolean isQuestion;
 	private boolean isLandscape = false;
 
+    private AccountManager mAccountManager;
+    
 	private void adjustLayout() {
 		DisplayMetrics metrics = new DisplayMetrics();
     	getWindowManager().getDefaultDisplay().getMetrics(metrics);
@@ -1368,4 +1376,92 @@ public class Q2Android extends SherlockListActivity {
 		return buttons;
 		
 	}
+	
+    /**
+* Show all the accounts registered on the account manager. Request an auth token upon user select.
+* @param authTokenType
+*/
+    private void showAccountPicker(final String authTokenType, final boolean invalidate) {
+
+        final Account availableAccounts[] = mAccountManager.getAccountsByType(AccountGeneral.ACCOUNT_TYPE);
+        
+        final AccountManager acm = AccountManager.get(getApplicationContext());
+        if (availableAccounts.length == 0) {
+
+        	// create new account
+            addNewAccount(AccountGeneral.ACCOUNT_TYPE, AccountGeneral.AUTHTOKEN_TYPE_FULL_ACCESS);
+            
+        } else {
+            final String name[] = new String[availableAccounts.length+2];
+            for (int i = 0; i < availableAccounts.length; i++) {
+                name[i] = availableAccounts[i].name;
+            }
+            name[name.length-2] = getString(R.string.new_account);
+            name[name.length-1] = getString(R.string.manage_accounts);
+
+            // Account picker
+            new AlertDialog.Builder(this).setTitle("Pick Account").setAdapter(new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_list_item_1, name), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                	if(which == name.length-2) {
+                        addNewAccount(AccountGeneral.ACCOUNT_TYPE, AccountGeneral.AUTHTOKEN_TYPE_FULL_ACCESS);
+                	}
+                	else if(which == name.length-1) {
+                		Intent intent = new Intent(Settings.ACTION_SYNC_SETTINGS);
+                		intent.putExtra(Settings.EXTRA_AUTHORITIES,new String[]{AccountGeneral.ACCOUNT_TYPE});
+                		startActivity(intent);
+                	}
+                	else
+                		getExistingAccountInfo(availableAccounts[which], authTokenType);
+                }
+            }).show();
+        }
+    }
+
+    /**
+	* Add new account to the account manager
+	* @param accountType
+	* @param authTokenType
+	*/
+    private void addNewAccount(String accountType, final String authTokenType) {
+        mAccountManager.addAccount(accountType, authTokenType, null, null, this, new AccountManagerCallback<Bundle>() {
+            @Override
+            public void run(AccountManagerFuture<Bundle> future) {
+                try {
+                	if(!future.isCancelled())
+                		showAccountPicker(authTokenType, false);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }, null);
+    }
+
+	private void getExistingAccountInfo(Account account, String authTokenType) {
+    	final AccountManagerFuture<Bundle> future = mAccountManager.getAuthToken(account, authTokenType, null, this, null, null);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Bundle bnd = future.getResult();
+                    String[] creds = bnd.getString(AccountManager.KEY_ACCOUNT_NAME).split("@");
+                    
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putString("username",creds[0]);
+                    editor.putString("website",creds[1]);
+                    editor.putString("password",bnd.getString(AccountManager.KEY_AUTHTOKEN));
+                    editor.commit();
+                    Message msg = new Message();
+                    msg.what = MSG_SCOPE;
+                    msg.arg1 = currentScope;
+                    mHandler.sendMessage(msg);
+                    
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
 }

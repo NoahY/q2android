@@ -8,6 +8,10 @@
 					
 	<!-- Login -->
 	
+	<string name="create_account">Create Account</string>
+	<string name="manage_accounts">Manage Accounts</string>
+	<string name="new_account">New Account</string>
+	<string name="accounts">Accounts</string>
 	<string name="login">Login</string>
 	<string name="register">Register</string>
 	<string name="website">Website</string>
@@ -121,5 +125,9 @@
 	
 	<!-- Options -->
 	<string name="q_options">Question Options</string>
+
+	<!-- Accounts -->
+	<string name="account">Account</string>
 	
+		
 </resources>

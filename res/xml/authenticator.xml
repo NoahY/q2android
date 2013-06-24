@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<account-authenticator xmlns:android="http://schemas.android.com/apk/res/android"
+	android:accountType="org.noahy.q2android.account"
+	android:icon="@drawable/actionbar_icon"
+	android:smallIcon="@drawable/actionbar_icon"
+	android:label="@string/app_name"
+	/>
