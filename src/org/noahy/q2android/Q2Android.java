@@ -1303,6 +1303,7 @@ public class Q2Android extends SherlockListActivity {
 							HashMap<String,Object> info = new HashMap<String,Object>();
 							info.put("content", input.getText().toString());
 							info.put("type", "A");
+							info.put("parentid", currentQuestionId);
 							info.put("format", prefs.getString("editor_type", ""));
 							
 							data.put("action_data", info);
