@@ -811,7 +811,6 @@ public class Q2Android extends SherlockListActivity {
 					HashMap<String,Object> info = new HashMap<String,Object>();
 					info.put("vote", upvote);
 					info.put("type", "Q");
-					info.put("postid", questionId);
 					
 					data.put("action_data", info);
 					data.put("postid", questionId);
@@ -831,7 +830,6 @@ public class Q2Android extends SherlockListActivity {
 					HashMap<String,Object> info = new HashMap<String,Object>();
 					info.put("vote", downvote);
 					info.put("type", "Q");
-					info.put("postid", questionId);
 					
 					data.put("action_data", info);
 					data.put("postid", questionId);
@@ -861,7 +859,6 @@ public class Q2Android extends SherlockListActivity {
 						HashMap<String,Object> info = new HashMap<String,Object>();
 						
 						info.put("type", "Q");
-						info.put("postid", questionId);
 						
 						data.put("action_data", info);
 						data.put("postid", questionId);
@@ -884,7 +881,6 @@ public class Q2Android extends SherlockListActivity {
 						
 						info.put("favorite", "true");
 						info.put("type", "Q");
-						info.put("postid", questionId);
 						
 						data.put("action_data", info);
 						data.put("postid", questionId);
@@ -995,12 +991,11 @@ public class Q2Android extends SherlockListActivity {
 							HashMap<String,Object> info = new HashMap<String,Object>();
 							info.put("vote", upvote);
 							info.put("type", "A");
-							info.put("postid", (String)rawMap.get("postid"));
 							
 							data.put("action_data", info);
 							data.put("postid", questionId);
 							data.put("action","vote");
-							data.put("action_id", currentQuestionId);
+							data.put("action_id", (String)rawMap.get("postid"));
 							getQuestion(data);
 							
 						}
@@ -1015,12 +1010,11 @@ public class Q2Android extends SherlockListActivity {
 							HashMap<String,Object> info = new HashMap<String,Object>();
 							info.put("vote", downvote);
 							info.put("type", "A");
-							info.put("postid", (String)rawMap.get("postid"));
 							
 							data.put("action_data", info);
 							data.put("postid", questionId);
 							data.put("action","vote");
-							data.put("action_id", currentQuestionId);
+							data.put("action_id", (String)rawMap.get("postid"));
 							getQuestion(data);
 							
 						}
@@ -1046,9 +1040,13 @@ public class Q2Android extends SherlockListActivity {
 								@Override
 								public void onClick(View v) {
 									HashMap<String,Object> data = new HashMap<String,Object>();
+									HashMap<String,Object> info = new HashMap<String,Object>();
+									info.put("question_id", questionId);
+																	
+									data.put("action_data", info);									
 									data.put("postid", questionId);
 									data.put("action","select");
-									data.put("action_id", currentQuestionId);
+									data.put("action_id", (String)rawMap.get("postid"));
 									getQuestion(data);
 								}
 								
@@ -1061,10 +1059,15 @@ public class Q2Android extends SherlockListActivity {
 								@Override
 								public void onClick(View v) {
 									HashMap<String,Object> data = new HashMap<String,Object>();
+									HashMap<String,Object> info = new HashMap<String,Object>();
+									info.put("question_id", questionId);
+									info.put("select", "true");
+																	
+									data.put("action_data", info);									
 									data.put("postid", questionId);
 									data.put("action","select");
 									data.put("action_data", answerId);
-									data.put("action_id", currentQuestionId);
+									data.put("action_id", (String)rawMap.get("postid"));
 									getQuestion(data);
 								}
 								
@@ -1179,7 +1182,8 @@ public class Q2Android extends SherlockListActivity {
 								info.put("format", (String) rawMap.get("format"));
 
 								data.put("action_data", info);
-								data.put("action","post");
+								data.put("action","edit");
+								data.put("action_id", (String)rawMap.get("postid"));
 								getQuestions(data,currentScope);
 
 								hideKeyboard(title);
@@ -1241,7 +1245,10 @@ public class Q2Android extends SherlockListActivity {
 				@Override
 				public void onClick(View v) {
 					HashMap<String,Object> data = new HashMap<String,Object>();
-					
+					HashMap<String,Object> info = new HashMap<String,Object>();
+					info.put("question_id", currentQuestionId);
+													
+					data.put("action_data", info);						
 					data.put("postid", currentQuestionId);
 					data.put("action","flag");
 					data.put("action_id", (String)rawMap.get("postid"));
@@ -1263,7 +1270,10 @@ public class Q2Android extends SherlockListActivity {
 				@Override
 				public void onClick(View v) {
 					HashMap<String,Object> data = new HashMap<String,Object>();
-					
+					HashMap<String,Object> info = new HashMap<String,Object>();
+					info.put("question_id", currentQuestionId);
+													
+					data.put("action_data", info);							
 					data.put("postid", currentQuestionId);
 					data.put("action","unflag");
 					data.put("action_id", (String)rawMap.get("postid"));
@@ -1278,9 +1288,54 @@ public class Q2Android extends SherlockListActivity {
 		}
 		if((Boolean)rawMap.get("closeable")) {
 		}
-		if((Boolean)rawMap.get("hideable")) {
+		if((Boolean)rawMap.get("hideable") || (Boolean)rawMap.get("reshowable")) {
+			Button abutton = (Button) layoutInflater.inflate(R.layout.button, null);
+			abutton.setText(getString((Boolean)rawMap.get("hideable")?R.string.hide:R.string.reshow));
+
+			abutton.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(final View v) {
+					HashMap<String,Object> data = new HashMap<String,Object>();
+					HashMap<String,Object> info = new HashMap<String,Object>();
+					if((Boolean)rawMap.get("hideable"))
+						info.put("hide", "true");
+													
+					data.put("action_data", info);	
+					data.put("postid", currentQuestionId);
+					data.put("action","hide");
+					data.put("action_id", (String)rawMap.get("postid"));
+					getQuestion(data);	
+
+				}
+			});
+			if(!first)
+				buttons.addView(layoutInflater.inflate(R.layout.button_separator, null));
+			else
+				first = false;
+			buttons.addView(abutton);
 		}
 		if((Boolean)rawMap.get("deleteable")) {
+			Button abutton = (Button) layoutInflater.inflate(R.layout.button, null);
+			abutton.setText(getString(R.string.delete));
+
+			abutton.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(final View v) {
+					
+					HashMap<String,Object> data = new HashMap<String,Object>();
+					data.put("postid", currentQuestionId);
+					data.put("action","delete");
+					data.put("action_id", (String)rawMap.get("postid"));
+					getQuestion(data);	
+				}
+			});
+			if(!first)
+				buttons.addView(layoutInflater.inflate(R.layout.button_separator, null));
+			else
+				first = false;
+			buttons.addView(abutton);
 		}
 
 		
@@ -1303,6 +1358,7 @@ public class Q2Android extends SherlockListActivity {
 							HashMap<String,Object> info = new HashMap<String,Object>();
 							info.put("content", input.getText().toString());
 							info.put("type", "A");
+							info.put("question_id", currentQuestionId);
 							info.put("parentid", currentQuestionId);
 							info.put("format", prefs.getString("editor_type", ""));
 							
@@ -1349,6 +1405,7 @@ public class Q2Android extends SherlockListActivity {
 							HashMap<String,Object> info = new HashMap<String,Object>();
 							info.put("content", input.getText().toString());
 							info.put("type", "C");
+							info.put("question_id", currentQuestionId);
 							info.put("parentid", (String)rawMap.get("postid"));
 							info.put("format", prefs.getString("editor_type", ""));
 

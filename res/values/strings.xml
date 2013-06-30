@@ -27,8 +27,6 @@
 	<string name="view">View</string>
 	<string name="share_link">Share Link</string>
 	<string name="share_via">Share Via…</string>
-	<string name="delete">Delete</string>
-	<string name="really_delete_post">Really delete post?</string>
 		
     <!-- Preferences -->
     
@@ -91,9 +89,11 @@
 	
 	<string name="edit">Edit</string>
 	<string name="hide">Hide</string>
+	<string name="reshow">Show</string>
+	<string name="delete">Delete</string>
 	<string name="ask_related">Ask Related</string>
 	<string name="flag">Flag</string>
-	<string name="unflag">Flag</string>
+	<string name="unflag">Unflag</string>
 	<string name="answer">Answer</string>
 	<string name="comment">Comment</string>
 	
