@@ -1183,6 +1183,7 @@ public class Q2Android extends SherlockListActivity {
 
 								data.put("action_data", info);
 								data.put("action","edit");
+								data.put("postid", currentQuestionId);
 								data.put("action_id", (String)rawMap.get("postid"));
 								getQuestions(data,currentScope);
 
