@@ -448,8 +448,7 @@ public class Q2Android extends SherlockListActivity {
 			return;
 
 		if(Q2AWebsite.getWebsite(this) == null || prefs.getString("username", null) == null || prefs.getString("password", null) == null) {
-			Intent i = new Intent(this, Q2ALoginActivity.class);
-			startActivityForResult(i, RESULT_LOGIN);
+			showAccountPicker(AccountGeneral.AUTHTOKEN_TYPE_FULL_ACCESS, false);
 			return;
 		}
 		
@@ -1066,7 +1065,6 @@ public class Q2Android extends SherlockListActivity {
 									data.put("action_data", info);									
 									data.put("postid", questionId);
 									data.put("action","select");
-									data.put("action_data", answerId);
 									data.put("action_id", (String)rawMap.get("postid"));
 									getQuestion(data);
 								}
